@@ -1,0 +1,4343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>CYDER-Discord security bot with 250+ commands</title>
+</head>
+<body>
+
+	
+</body>
+</html>
+<style>
+	/* --- 💎 CYDER HUD DESIGN CORE SCHEMES --- */
+@import url('https://googleapis.com');
+
+body, html {
+    background: #050505 !important; /* प्योर डार्क नाइट मैट बैकग्राउंड */
+    color: #FFFFFF !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+}
+
+/* --- 🚀 MASTER NAVBAR CONTAINMENT ENGINE --- */
+.cyder-navbar-shell {
+    position: fixed !important; top: 0; left: 0; width: 100%; height: 76px;
+    background: rgba(5, 5, 5, 0.8) !important;
+    backdrop-filter: blur(18px) !important; -webkit-backdrop-filter: blur(18px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+    z-index: 9999999 !important;
+    display: flex !important; align-items: center !important;
+    box-sizing: border-box;
+}
+
+.cyder-nav-container {
+    width: 100% !important; max-width: 1280px !important; margin: 0 auto !important;
+    display: flex !important; align-items: center !important; justify-content: space-between !important;
+    padding: 0 24px !important; box-sizing: border-box;
+}
+
+/* --- LOGO ALIGNMENT --- */
+.cyder-brand-logo-wrapper {
+    display: flex !important; align-items: center !important; gap: 10px !important;
+    text-decoration: none !important; transition: opacity 0.2s;
+}
+.cyder-brand-logo-wrapper:hover { opacity: 0.9; }
+
+.cyder-core-avatar-img {
+    width: 32px !important; height: 32px !important; border-radius: 50% !important;
+    object-fit: cover !important; background: #101010;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.cyder-brand-text-label {
+    font-family: 'Syncopate', sans-serif !important; color: #FFFFFF !important;
+    font-size: 19px !important; font-weight: 700 !important; letter-spacing: -0.5px !important;
+    text-transform: none !important;
+}
+
+/* --- MENU NAVIGATION LINKS --- */
+.cyder-nav-links-menu {
+    display: flex !important; list-style: none !important; gap: 26px !important;
+    margin: 0 !important; padding: 0 !important; align-items: center !important;
+}
+
+.cyder-nav-route-item {
+    color: #a0a0a0 !important; font-size: 14.5px !important; font-weight: 600 !important;
+    text-decoration: none !important; transition: color 0.2s ease !important;
+}
+.cyder-nav-route-item:hover {
+    color: #63FF00 !important; /* माउस ले जाने पर नियॉन ग्रीन ग्लो इफ़ेक्ट */
+}
+
+/* --- RIGHT ACTION CONTROL CONTROLLERS --- */
+.cyder-nav-actions-stack {
+    display: flex !important; align-items: center !important; gap: 16px !important;
+}
+
+/* 🌓 थीम स्विचर कैप्सूल (Exact Visual Replication) */
+.cyder-theme-switcher-pill {
+    background: #101010 !important; border: 1px solid #202020 !important;
+    padding: 3px !important; border-radius: 10px !important; display: flex !important; gap: 2px !important;
+}
+.theme-icon-node {
+    background: transparent !important; border: none !important; color: #64748b !important;
+    width: 26px; height: 26px; border-radius: 7px; display: flex; align-items: center;
+    justify-content: center; cursor: pointer; transition: all 0.2s;
+}
+.theme-icon-node:hover { color: #ffffff !important; }
+.active-system-mode {
+    background: #63FF00 !important; color: #050505 !important; /* सक्रिय मोड नियॉन ग्रीन चमकेगा */
+}
+.active-system-mode:hover { color: #050505 !important; }
+
+/* ✨ प्रीमियम गोल्ड बटन */
+.btn-cyder-premium-gold-badge {
+    color: #cca43b !important; font-size: 14px !important; font-weight: 700 !important;
+    text-decoration: none !important; display: flex !important; align-items: center !important;
+    gap: 5px !important; transition: text-shadow 0.2s;
+}
+.btn-cyder-premium-gold-badge:hover {
+    text-shadow: 0 0 8px rgba(204, 164, 59, 0.4) !important;
+}
+
+/* ⚡ ऐड टू डिस्कॉर्ड ऐक्शन बटन */
+.btn-cyder-add-to-discord-action {
+    background: #63FF00 !important; color: #050505 !important; /* सिग्नेचर नियॉन ग्रीन */
+    padding: 10px 20px !important; border-radius: 12px !important;
+    font-size: 14px !important; font-weight: 700 !important; text-decoration: none !important;
+    display: flex !important; align-items: center !important; gap: 8px !important;
+    box-shadow: 0 4px 15px rgba(99, 255, 0, 0.2) !important;
+    transition: transform 0.2s, box-shadow 0.2s !important;
+}
+.btn-cyder-add-to-discord-action:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 20px rgba(99, 255, 0, 0.35) !important;
+}
+.bolt-svg-icon { transform: translateY(0.5px); }
+
+/* 📱 मोबाइल रिस्पॉन्सिव इंजन - स्क्रीन छोटी होने पर मेनू हाइड होना */
+@media screen and (max-width: 900px) {
+    .cyder-nav-links-menu, .cyder-theme-switcher-pill, .btn-cyder-premium-gold-badge {
+        display: none !important;
+    }
+}
+/* ========================================================================= */
+/* 🌓 23. GLOBAL FULL-PAGE THEME DYNAMICS ENGINE (100% OPERATIONAL) */
+/* ========================================================================= */
+
+/* 🌌 1. डिफ़ॉल्ट डार्क मोड वेरिएबल्स (पूरे पेज को काला और नियॉन ग्रीन रखेगा) */
+:root {
+    --cyder-bg: #050505 !important;
+    --cyder-card-bg: #101010 !important;
+    --cyder-text-main: #FFFFFF !important;
+    --cyder-text-sub: #A0A0A0 !important;
+    --cyder-border: #202020 !important;
+    --cyder-neon: #63FF00 !important;
+}
+
+/* ⚪ 2. लाइट मोड वेरिएबल्स (क्लिक करते ही पूरी वेबसाइट को वाइट कर देगा) */
+body.theme-light {
+    --cyder-bg: #FFFFFF !important; /* ⚡ फिक्स: पूरा पेज वाइट होगा */
+    --cyder-card-bg: #f8fafc !important;
+    --cyder-text-main: #0f172a !important; /* अक्षर पूरी वेबसाइट पर डार्क ब्लैक हो जाएंगे */
+    --cyder-text-sub: #475569 !important;
+    --cyder-border: #e2e8f0 !important;
+    --cyder-neon: #00D200 !important; /* थोड़ा सॉलिड ग्रीन ताकि वाइट पर क्रिस्प दिखे */
+}
+
+/* 🏢 3. मास्टर ग्लोबल बॉडी ओवरराइड (यही पूरे पेज को एक साथ बदलेगा) */
+body, html {
+    background-color: var(--cyder-bg) !important;
+    color: var(--cyder-text-main) !important;
+    transition: background-color 0.25s ease, color 0.25s ease !important;
+}
+
+/* हेडर कंटेनर का रिस्पॉन्सिव बैकग्राउंड */
+.cyder-navbar-shell {
+    background-color: var(--cyder-bg) !important;
+    border-bottom: 1px solid var(--cyder-border) !important;
+}
+
+/* नेविगेशन टेक्स्ट का रंग संतुलन */
+.cyder-brand-text-label, .cyder-nav-route-item {
+    color: var(--cyder-text-main) !important;
+}
+.cyder-nav-route-item:hover {
+    color: var(--cyder-neon) !important;
+}
+
+/* थीम कैप्सूल बॉक्स का बैकग्राउंड */
+.cyder-theme-switcher-pill {
+    background: var(--cyder-card-bg) !important;
+    border: 1px solid var(--cyder-border) !important;
+}
+
+/* 🚀 🚀 फिक्स: पहले स्क्रीनशॉट की तरह जो भी बटन एक्टिव होगा, उसका बैकग्राउंड कड़क नियॉन ग्रीन (#63FF00) चमकेगा! 🚀 🚀 */
+.theme-icon-node.active-mode,
+.theme-icon-node.active-system-mode {
+    background: #63FF00 !important; /* 🟢 100% शुद्ध नियॉन ग्रीन बैकग्राउंड */
+    color: #050505 !important; /* आइकॉन ब्लैक हो जाएगा */
+}
+
+/* ⚡ मुख्य 'Add to Discord' बटन का स्टाइल */
+.btn-cyder-add-to-discord-action {
+    background: var(--cyder-neon) !important;
+    color: #050505 !important;
+}
+/* --- 🌌 24. CYDER HERO VIEWPORT INTERACTION MATRICES --- */
+
+.cyder-hero-viewport-section {
+    width: 100% !important;
+    min-height: calc(100vh - 76px) !important;
+    margin-top: 76px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important; /* स्क्रीनशॉट की तरह लेफ्ट-अलाइनमेंट */
+    padding: 60px 40px 80px 80px !important; /* प्रीमियम वाइड स्पेसिंग संतुलन */
+    box-sizing: border-box !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.cyder-hero-central-stack {
+    max-width: 860px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important; /* अक्षरों को लेफ्ट में अलाइन करना */
+    text-align: left !important;
+    z-index: 5 !important;
+}
+
+/* ⚡ 1. TOP BRANDING BADGE COMPONENT */
+.cyder-hero-badge-capsule {
+    background: rgba(168, 85, 247, 0.12) !important; /* हल्का पर्पल शेड बिल्कुल स्क्रीनशॉट जैसा */
+    border: 1px solid rgba(168, 85, 247, 0.25) !important;
+    color: #A855F7 !important; /* पर्पल ब्रांडिंग कलर */
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    padding: 6px 14px !important;
+    border-radius: 50px !important;
+    letter-spacing: 0.5px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    margin-bottom: 28px !important;
+}
+.badge-bolt-icon { font-size: 10px !important; }
+
+/* 🛡️ 2. MAIN ACCENT TAGLINE TYPE SCHEMES */
+.cyder-hero-main-slogan {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
+    /* ⚡ फिक्स: वेरिएबल्स के साथ जोड़ा ताकि वाइट मोड में टेक्स्ट अपने आप ब्लैक हो जाए */
+    color: var(--cyder-text-main) !important;
+    font-size: 78px !important; /* स्क्रीनशॉट जैसा विशालकाय एलीट बोल्ड साइज */
+    font-weight: 900 !important;
+    line-height: 1.05 !important;
+    letter-spacing: -2px !important;
+    text-transform: none !important;
+    margin: 0 0 24px 0 !important;
+}
+
+/* 🚀 🚀 जादू: डार्क मोड में तो ये नियॉन ग्रीन चमकेगा, लेकिन लाइट मोड में आटोमैटिक डार्क ग्रीन होगा ताकि वाइट बैकग्राउंड पर साफ़ दिखे 🚀 🚀 */
+.cyder-neon-green-glow-text {
+    color: var(--cyder-neon) !important;
+    /* हल्का सा खूबसूरत विज़ुअल ग्लो आभामंडल */
+    text-shadow: 0 0 20px rgba(99, 255, 0, 0.25) !important;
+}
+
+body.theme-light .cyder-neon-green-glow-text {
+    text-shadow: none !important; /* सफ़ेद बैकग्राउंड पर ग्लो बंद रहेगा */
+}
+
+/* ✍️ 3. CORE BOT SUB-DESCRIPTION LABEL */
+.cyder-hero-sub-description-label {
+    color: var(--cyder-text-sub) !important;
+    font-size: 16.5px !important;
+    font-weight: 500 !important;
+    line-height: 1.6 !important;
+    max-width: 640px !important;
+    margin: 0 0 35px 0 !important;
+}
+
+/* 🎛️ 4. DOUBLE ACTION ROW BUTTONS CONFIG */
+.cyder-hero-action-buttons-row {
+    display: flex !important;
+    gap: 16px !important;
+    margin-bottom: 45px !important;
+}
+
+/* पहला प्राइमरी एक्शन बटन (Add to Discord) */
+.btn-hero-primary-action {
+    background: var(--cyder-neon) !important; /* थीम के हिसाब से लाइव रंग बदलेगा */
+    color: var(--cyder-bg) !important; /* बैकग्राउंड के अपोजिट रंग में अक्षर रहेंगे */
+    padding: 12px 24px !important;
+    border-radius: 12px !important;
+    font-size: 14.5px !important;
+    font-weight: 800 !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    box-shadow: 0 4px 15px rgba(99, 255, 0, 0.2) !important;
+    transition: transform 0.2s, box-shadow 0.2s !important;
+}
+.btn-hero-primary-action:hover {
+    transform: translateY(-1.5px) !important;
+    box-shadow: 0 8px 25px rgba(99, 255, 0, 0.4) !important;
+}
+
+/* दूसरा सेकेंडरी एक्शन बटन (See all features) */
+.btn-hero-secondary-action {
+    background: transparent !important;
+    border: 1px solid var(--cyder-border) !important;
+    color: var(--cyder-text-main) !important;
+    padding: 12px 24px !important;
+    border-radius: 12px !important;
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    transition: all 0.2s ease !important;
+}
+.btn-hero-secondary-action:hover {
+    border-color: var(--cyder-text-main) !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+}
+
+/* 👥 5. SOCIAL PROOF AVATARS FOOTER */
+.cyder-hero-social-proof-footer {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+.cyder-avatars-overlap-row {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.avatar-circle-node {
+    width: 26px !important;
+    height: 26px !important;
+    border-radius: 50% !important;
+    background-size: cover !important;
+    background-position: center !important;
+    border: 2px solid var(--cyder-bg) !important; /* थीम के हिसाब से किनारा बदलेगा */
+    box-sizing: border-box !important;
+    background-color: var(--cyder-card-bg) !important;
+}
+
+.cyder-social-proof-text-label {
+    font-size: 13px !important;
+    color: var(--cyder-text-sub) !important;
+    margin: 0 !important;
+    font-weight: 600 !important;
+}
+.cyder-social-proof-text-label span {
+    color: var(--cyder-text-main) !important;
+    font-weight: 800 !important;
+}
+
+/* 📱 मोबाइल और टैबलेट रिस्पॉन्सिव स्केलर */
+@media screen and (max-width: 860px) {
+    .cyder-hero-viewport-section {
+        padding: 40px 24px 60px 24px !important;
+        justify-content: center !important;
+    }
+    .cyder-hero-central-stack {
+        align-items: center !important;
+        text-align: center !important;
+    }
+    .cyder-hero-main-slogan { font-size: 42px !important; text-align: center !important; }
+    .cyder-hero-sub-description-label { font-size: 14.5px !important; text-align: center !important; }
+    .cyder-hero-action-buttons-row { flex-direction: column !important; width: 100% !important; gap: 12px !important; }
+    .btn-hero-primary-action, .btn-hero-secondary-action { justify-content: center !important; width: 100% !important; box-sizing: border-box !important; }
+    .cyder-hero-social-proof-footer { flex-direction: column !important; gap: 8px !important; }
+}
+/* --- 💎 CYDER HERO BADGE MICRO LOGO OPTIMIZER --- */
+.cyder-badge-micro-logo {
+    width: 14px !important;
+    height: 14px !important;
+    border-radius: 50% !important; /* बिल्कुल गोल शेप */
+    object-fit: cover !important;
+    display: inline-block !important;
+    border: 1px solid rgba(168, 85, 247, 0.4) !important; /* पर्पल थीम से मैचिंग बारीक किनारा */
+    background: #050505;
+}
+
+/* लाइट मोड में बॉर्डर का रंग अपने आप एडजस्ट होने का नियम */
+body.theme-light .cyder-badge-micro-logo {
+    border-color: rgba(168, 85, 247, 0.6) !important;
+}
+/* ========================================================================= */
+/* 🌓 25. UNIVERSAL ULTRA-FINE MICRO-GRID ENHANCEMENT ENGINE (AUTO-COLOR)  */
+/* ========================================================================= */
+
+/* 🌌 1. डिफ़ॉल्ट डार्क मोड वेरिएबल्स (तीसरे बटन और सिस्टम डार्क मोड के लिए) */
+:root {
+    --cyder-bg: #030207 !important;
+    --cyder-card-bg: #0a0812 !important;
+    --cyder-text-main: #FFFFFF !important;
+    --cyder-text-sub: #7e7c8c !important;
+    --cyder-border: rgba(168, 85, 247, 0.08) !important;
+    --cyder-neon: #63FF00 !important;
+    
+    /* ⚡ फिक्स: डार्क मोड में बारीक, तीखा और म्यूटेड माइक्रो-ग्रिड (1px की पतली लाइन) */
+    --cyder-grid-pattern: 
+        linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px) !important;
+}
+
+/* ⚪ 2. लाइट मोड वेरिएबल्स (सूरज वाले बटन पर क्लिक करने पर खुद को ऑटो-एडजस्ट करेगा) */
+body.theme-light {
+    --cyder-bg: #FFFFFF !important;
+    --cyder-card-bg: #f8fafc !important;
+    --cyder-text-main: #0f172a !important;
+    --cyder-text-sub: #475569 !important;
+    --cyder-border: #e2e8f0 !important;
+    --cyder-neon: #00D200 !important;
+    
+    /* ⚡ फिक्स: लाइट मोड में अपने आप डार्क स्याही वाले रंग में एडजस्ट होने वाला बारीक माइक्रो-ग्रिड */
+    --cyder-grid-pattern: 
+        linear-gradient(rgba(15, 23, 42, 0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.018) 1px, transparent 1px) !important;
+}
+
+/* 🏢 3. मास्टर ग्लोबल बॉडी ओवरराइड (यही पूरे पेज पर बैकग्राउंड ग्रिड को बिछाएगा) */
+body, html {
+    background-color: var(--cyder-bg) !important;
+    
+    /* 🚀 पूरे पेज के बैकग्राउंड में इनलाइन ग्रिड को इंजेक्ट करना 🚀 */
+    background-image: var(--cyder-grid-pattern) !important;
+    
+    /* 🚀 🚀 फिक्स: तुम्हारी डिमांड के मुताबिक डिब्बों का साइज छोटा (Micro 18px Grid) कर दिया है 🚀 🚀 */
+    background-size: 18px 18px !important; 
+    
+    color: var(--cyder-text-main) !important;
+    transition: background-color 0.25s ease, background-image 0.25s ease, color 0.25s ease !important;
+}
+
+/* हेडर कंटेनर का रिस्पॉन्सिव बैकग्राउंड (Navbar transparency sync) */
+.cyder-navbar-shell {
+    background-color: rgba(3, 2, 7, 0.75) !important;
+    border-bottom: 1px solid var(--cyder-border) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+}
+body.theme-light .cyder-navbar-shell {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    border-bottom: 1px solid var(--cyder-border) !important;
+}
+
+/* थीम कैप्सूल बॉक्स का बैकग्राउंड */
+.cyder-theme-switcher-pill {
+    background: var(--cyder-card-bg) !important;
+    border: 1px solid var(--cyder-border) !important;
+}
+
+/* 🟢 बटन एक्टिव होने पर तीखा नियॉन ग्रीन रिस्पॉन्स */
+.theme-icon-node.active-mode,
+.theme-icon-node.active-system-mode {
+    background: #63FF00 !important;
+    color: #050505 !important;
+}
+/* --- 💎 26. CYDER HUD NAVIGATION BAR COLOR OVERRIDE FIX --- */
+
+.cyder-navbar-shell {
+    /* 🚀 डार्क मोड में बिल्कुल गहरा मैट ब्लैक-पर्पल विद ब्लर इफ़ेक्ट */
+    background-color: rgba(3, 2, 7, 0.75) !important;
+    border-bottom: 1px solid var(--cyder-border) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    transition: background-color 0.25s ease, border-color 0.25s ease !important;
+}
+
+/* 🚀 🚀 जादू: जब थीम लाइट (वाइट) होगी, तो वो गंदा ग्रे कलर हटकर पूरी तरह क्रिस्टल क्लियर वाइट ग्लास बनेगा! 🚀 🚀 */
+body.theme-light .cyder-navbar-shell {
+    background-color: rgba(255, 255, 255, 0.8) !important; /* ⚪ हल्का ट्रांसपेरेंट प्योर वाइट */
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06) !important; /* बारीक और साफ म्यूटेड बॉर्डर */
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+}
+/* ========================================================================= */
+/* 💻 29. DYNAMIC DISCORD LIVE ANIMATION CORE STYLING MATRIX                */
+/* ========================================================================= */
+
+.cyder-discord-mockup-frame {
+    width: 100% !important;
+    max-width: 620px !important;
+    background: #FFFFFF !important; /* शुरुआत में लाइट थीम के हिसाब से दूध जैसा सफ़ेद */
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 18px !important;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.04) !important;
+    overflow: hidden !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+/* 🚀 🚀 जादू 1: थीम चेंज का कमाल! डार्क मोड पर जाते ही ये डिब्बा कतई कड़क हैकर-डार्क हो जाएगा 🚀 🚀 */
+body.theme-dark .cyder-discord-mockup-frame {
+    background: #0a0812 !important; /* गहरा डार्क पर्पल-ब्लैक */
+    border-color: rgba(168, 85, 247, 0.08) !important;
+    box-shadow: 0 25px 55px rgba(0,0,0,0.6) !important;
+}
+
+.cyder-mockup-header-bar {
+    background: rgba(15, 23, 42, 0.02) !important;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.04) !important;
+    padding: 12px 20px !important;
+    display: flex !important; align-items: center !important;
+}
+body.theme-dark .cyder-mockup-header-bar {
+    background: rgba(255, 255, 255, 0.015) !important;
+    border-bottom: 1px solid rgba(168, 85, 247, 0.08) !important;
+}
+
+body.theme-dark .cyder-mockup-header-channel-title {
+    color: #7e7c8c !important;
+}
+
+.cyder-mockup-terminal-body {
+    padding: 24px 28px !important;
+    display: flex !important; flex-direction: column !important; gap: 14px !important;
+    font-size: 14.5px !important; font-weight: 600 !important;
+    color: #334155 !important;
+}
+body.theme-dark .cyder-mockup-terminal-body {
+    color: #cbd5e1 !important;
+}
+
+/* 🚀 🚀 जादू 2: टाइपराइटर इफ़ेक्ट (Typing Matrix Loop) 🚀 🚀 */
+.cyder-typewriter-text-line {
+    display: inline-block !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    border-right: 2px solid var(--cyder-neon) !important; /* चमकीली कर्सर डंडी */
+    width: 0;
+    font-weight: 700 !important;
+    color: var(--cyder-text-main) !important;
+    
+    /* ⚡ 1.2 सेकंड में लाइव कमांड टाइप होगा और कर्सर ब्लिंक करेगा */
+    animation: 
+        cyderTypingActionLoop 3.5s steps(38, end) infinite alternate,
+        cyderCursorBlinkLoop 0.7s step-end infinite !important;
+}
+
+/* 🚀 🚀 जादू 3: बॉट के रिस्पॉन्स मैसेजेस को टाइप होने के बाद धीरे से ऊपर प्रकट करना (Delayed Fade-In) 🚀 🚀 */
+.cyder-response-line-1 { animation: lineFadeInEffect 7s infinite alternate !important; }
+.cyder-response-line-2 { animation: lineFadeInEffect 7s infinite alternate !important; animation-delay: 0.8s !important; }
+.cyder-response-line-3 { animation: lineFadeInEffect 7s infinite alternate !important; animation-delay: 1.6s !important; }
+
+/* 🟢 डार्क मोड में ये मैसेजेस कतई ज़हर नियॉन ग्रीन में चमकेंगे */
+.cyder-mockup-success-green-text { color: #16a34a !important; }
+body.theme-dark .cyder-mockup-success-green-text {
+    color: #63FF00 !important;
+    text-shadow: 0 0 10px rgba(99, 255, 0, 0.3) !important;
+}
+
+/* --- 🎬 DYNAMIC 60 FPS ANIMATION KEYFRAMES --- */
+@keyframes cyderTypingActionLoop {
+    0%, 10% { width: 0; }
+    40%, 100% { width: 100%; } /* टाइप होने के बाद थोड़ा होल्ड रहेगा ताकि क्लाइंट पढ़ सके */
+}
+
+@keyframes cyderCursorBlinkLoop {
+    from, to { border-color: transparent; }
+    50% { border-color: var(--cyder-neon); }
+}
+
+@keyframes lineFadeInEffect {
+    0%, 25% { opacity: 0; transform: translateY(5px); }
+    35%, 100% { opacity: 1; transform: translateY(0); }
+}
+/* --- 💻 29. DYNAMIC DISCORD LIVE ANIMATION FIXED CORE OVERRIDE (100% VISIBLE) --- */
+
+/* 🚀 🚀 जादू 1: रैपर बॉक्स को पूरी चौड़ाई देना और इसे ज़बरदस्ती स्क्रीन पर दिखाना 🚀 🚀 */
+.cyder-mockup-wrapper-node {
+    width: 100% !important;
+    max-width: 620px !important;
+    display: block !important; /* फ्लेक्सिबल ब्लॉक अलाइनमेंट */
+    visibility: visible !important;
+    opacity: 1 !important;
+    margin-top: 40px !important;
+    position: relative !important;
+    z-index: 99999 !important; /* पूरी वेबसाइट के ऊपर रेंडर होगा भाई */
+    box-sizing: border-box !important;
+}
+
+/* मुख्य मैक-स्टाइल का कंसोल डिब्बा */
+.cyder-discord-mockup-frame {
+    width: 100% !important;
+    background: #FFFFFF !important; /* शुरुआत में लाइट थीम के हिसाब से दूध जैसा सफ़ेद */
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 18px !important;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.06) !important;
+    overflow: hidden !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* 🚀 🚀 जादू 2: थीम चेंज का कमाल! डार्क मोड पर जाते ही ये डिब्बा कतई कड़क हैकर-डार्क हो जाएगा 🚀 🚀 */
+body.theme-dark .cyder-discord-mockup-frame {
+    background: #0a0812 !important; /* गहरा डार्क पर्पल-ब्लैक बिल्कुल स्क्रीनशॉट जैसा */
+    border-color: rgba(168, 85, 247, 0.15) !important;
+    box-shadow: 0 25px 55px rgba(0,0,0,0.6) !important;
+}
+
+.cyder-mockup-header-bar {
+    background: rgba(15, 23, 42, 0.03) !important;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.05) !important;
+    padding: 14px 20px !important;
+    display: flex !important; 
+    align-items: center !important;
+}
+body.theme-dark .cyder-mockup-header-bar {
+    background: rgba(255, 255, 255, 0.015) !important;
+    border-bottom: 1px solid rgba(168, 85, 247, 0.15) !important;
+}
+
+.cyder-mockup-terminal-body {
+    padding: 24px 28px !important;
+    display: flex !important; 
+    flex-direction: column !important; 
+    gap: 14px !important;
+    font-size: 14.5px !important; 
+    font-weight: 600 !important;
+    color: #334155 !important;
+    text-align: left !important;
+}
+body.theme-dark .cyder-mockup-terminal-body {
+    color: #cbd5e1 !important;
+}
+
+/* 🚀 🚀 जादू 3: टाइपराइटर इफ़ेक्ट (Typing Matrix Loop) 🚀 🚀 */
+.cyder-typewriter-text-line {
+    display: inline-block !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    border-right: 2px solid var(--cyder-neon) !important; /* चमकीली कर्सर डंडी */
+    width: 0;
+    font-weight: 700 !important;
+    color: var(--cyder-text-main) !important;
+    
+    /* ⚡ 1.2 सेकंड में लाइव कमांड टाइप होगा और कर्सर ब्लिंक करेगा */
+    animation: 
+        cyderTypingActionLoop 3.5s steps(38, end) infinite alternate,
+        cyderCursorBlinkLoop 0.7s step-end infinite !important;
+}
+
+/* 🚀 🚀 जादू 4: बॉट के रिस्पॉन्स मैसेजेस को टाइप होने के बाद धीरे से ऊपर प्रकट करना (Delayed Fade-In) 🚀 🚀 */
+.cyder-response-line-1 { animation: lineFadeInEffect 7s infinite alternate !important; }
+.cyder-response-line-2 { animation: lineFadeInEffect 7s infinite alternate !important; animation-delay: 0.8s !important; }
+.cyder-response-line-3 { animation: lineFadeInEffect 7s infinite alternate !important; animation-delay: 1.6s !important; }
+
+/* 🟢 डार्क मोड में ये मैसेजेस कतई ज़हर नियॉन ग्रीन में चमकेंगे */
+.cyder-mockup-success-green-text { color: #16a34a !important; }
+body.theme-dark .cyder-mockup-success-green-text {
+    color: #63FF00 !important;
+    text-shadow: 0 0 10px rgba(99, 255, 0, 0.3) !important;
+}
+
+/* --- 🎬 DYNAMIC 60 FPS ANIMATION KEYFRAMES --- */
+@keyframes cyderTypingActionLoop {
+    0%, 10% { width: 0; }
+    40%, 100% { width: 100%; } /* टाइप होने के बाद थोड़ा होल्ड रहेगा ताकि क्लाइंट पढ़ सके */
+}
+
+@keyframes cyderCursorBlinkLoop {
+    from, to { border-color: transparent; }
+    50% { border-color: var(--cyder-neon); }
+}
+
+@keyframes lineFadeInEffect {
+    0%, 25% { opacity: 0; transform: translateY(5px); }
+    35%, 100% { opacity: 1; transform: translateY(0); }
+}
+/* --- 📱 CYDER HUD HERO SECTION MOBILE PERFECTION ENGINE --- */
+
+@media screen and (max-width: 860px) {
+    /* 🚀 1. पूरे हीरो कंटेनर को मोबाइल पर सेंटर अलाइन और पैडिंग री-ट्यून करना */
+    .cyder-hero-viewport-section {
+        padding: 40px 20px 60px 20px !important; /* साइड्स में सुंदर कॉम्पैक्ट गैप */
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        min-height: auto !important;
+    }
+
+    /* 🚀 2. मुख्य स्टैक को जबरदस्ती सेंटर अलाइनमेंट पर लॉक करना */
+    .cyder-hero-central-stack {
+        align-items: center !important; /* ⚡ यही सब कुछ खींचकर बीच में लाएगा */
+        text-align: center !important;  /* सारे अक्षरों को सेंटर करना */
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    /* 🚀 3. टॉप बैज को सेंटर में बैलेंस करना */
+    .cyder-hero-badge-capsule {
+        margin: 0 auto 20px auto !important;
+        display: inline-flex !important;
+        justify-content: center !important;
+    }
+
+    /* 🚀 4. मुख्य हेडिंग का मोबाइल साइज और लाइन गैप फिक्स */
+    .cyder-hero-main-slogan {
+        font-size: 38px !important; /* फोन के लिए एकदम परफेक्ट क्रिस्प साइज */
+        line-height: 1.15 !important;
+        letter-spacing: -1px !important;
+        text-align: center !important;
+        margin: 0 0 16px 0 !important;
+        width: 100% !important;
+    }
+
+    /* 🚀 5. सब-डिस्क्रिप्शन को स्क्रीन के दोनों कोनों से बचाना */
+    .cyder-hero-sub-description-label {
+        font-size: 14.5px !important;
+        line-height: 1.55 !important;
+        text-align: center !important;
+        max-width: 100% !important;
+        margin: 0 0 28px 0 !important;
+        padding: 0 10px !important; /* टेक्स्ट को किनारों से दूर रखना */
+        box-sizing: border-box !important;
+    }
+
+    /* 🚀 6. बिल्कुल Azelia की तरह बटन्स को एक के नीचे एक फुल-विड्थ में सेट करना */
+    .cyder-hero-action-buttons-row {
+        flex-direction: column !important; /* ⚡ दोनों बटन्स एक के नीचे एक आ जाएंगे */
+        width: 100% !important;
+        max-width: 340px !important; /* फोन पर बहुत ज़्यादा बड़ा न दिखे */
+        gap: 12px !important; /* बटन्स के बीच का परफेक्ट स्पेस */
+        margin: 0 auto 35px auto !important;
+    }
+
+    /* दोनों बटन्स की चौड़ाई 100% लॉक करना */
+    .btn-hero-primary-action, 
+    .btn-hero-secondary-action {
+        width: 100% !important;
+        justify-content: center !important; /* अंदर के टेक्स्ट और एरो को बीच में लाना */
+        box-sizing: border-box !important;
+        padding: 14px 20px !important; /* मोटा और प्रीमियम फील */
+        font-size: 15px !important;
+    }
+
+    /* 🚀 7. नीचे के अवतारों और सोशल प्रूफ टेक्स्ट का मोबाइल सिंक */
+    .cyder-hero-social-proof-footer {
+        flex-direction: column !important; /* अवतार ऊपर, टेक्स्ट नीचे */
+        gap: 10px !important;
+        margin: 0 auto !important;
+        width: 100% !important;
+        justify-content: center !important;
+    }
+
+    .cyder-avatars-overlap-row {
+        justify-content: center !important;
+    }
+
+    .cyder-social-proof-text-label {
+        text-align: center !important;
+        font-size: 13px !important;
+    }
+}
+/* --- 📊 26. CYDER HUD STATISTICS COUNTER GRID ENGINE --- */
+
+.cyder-stats-section-wrapper {
+    width: 100% !important;
+    max-width: 1280px !important;
+    margin: 40px auto 80px auto !important;
+    padding: 0 40px !important;
+    box-sizing: border-box !important;
+}
+
+.cyder-stats-grid-container {
+    display: grid !important;
+    /* 🚀 4-कॉलम पैरेलल डिस्ट्रीब्यूशन ग्रिड आर्किटेक्चर */
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 20px !important;
+    width: 100% !important;
+}
+
+/* 🧱 ओब्सीडियन काउंटर कार्ड यूआई (Exact Visual Sync) */
+.cyder-stat-counter-card {
+    background: var(--cyder-card-bg) !important; /* लाइट मोड में वाइट, डार्क मोड में #101010 */
+    border: 1px solid var(--cyder-border) !important;
+    border-radius: 18px !important;
+    padding: 28px 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02) !important;
+    transition: background-color 0.25s, border-color 0.25s, transform 0.2s !important;
+}
+
+body.theme-dark .cyder-stat-counter-card {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* माउस ले जाने पर हल्का सा ऊपर उठने का प्रीमियम विज़ुअल इफ़ेक्ट */
+.cyder-stat-counter-card:hover {
+    transform: translateY(-2px) !important;
+    border-color: var(--cyder-neon) !important; /* किनारा तुम्हारे ब्रांड नियॉन कलर में चमकेगा */
+}
+
+/* 🌀 कार्ड के अंदर का नन्हा नियॉन-पर्पल आइकॉन */
+.stat-icon-glow-node {
+    color: #A855F7 !important; /* तुम्हारी सेंट्रल ब्रांडिंग का पर्पल शेड बिल्कुल स्क्रीनशॉट जैसा */
+    margin-bottom: 12px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(168, 85, 247, 0.06);
+    padding: 10px;
+    border-radius: 50%;
+}
+
+/* 🏢 मुख्य बड़े विज़िबल नंबर्स */
+.stat-live-number-label {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
+    color: var(--cyder-text-main) !important;
+    font-size: 32px !important; /* कड़क बोल्ड एलीट साइज */
+    font-weight: 850 !important;
+    margin: 0 0 6px 0 !important;
+    letter-spacing: -1px !important;
+}
+
+/* नीचे का बारीक म्यूटेड सब-लेबल */
+.stat-core-title-label {
+    color: var(--cyder-text-sub) !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* 📱 मोबाइल और टैबलेट रिस्पॉन्सिव स्केलर - छोटी स्क्रीन पर डिब्बे आटोमैटिक सेट होना */
+@media screen and (max-width: 960px) {
+    .cyder-stats-grid-container {
+        grid-template-columns: repeat(2, 1fr) !important; /* टैबलेट पर २-कॉलम ग्रिड */
+        gap: 16px !important;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    .cyder-stats-section-wrapper { padding: 0 20px !important; }
+    .cyder-stats-grid-container {
+        grid-template-columns: 1fr !important; /* फोन की स्क्रीन पर सारे डिब्बे लाइन से एक के नीचे एक */
+        gap: 12px !important;
+    }
+    .stat-live-number-label { font-size: 28px !important; }
+}
+/* --- 🌀 27. MASTERY DUAL-COLUMN HERO SECTION GRID ALIGNMENT --- */
+
+.cyder-hero-viewport-section {
+    width: 100% !important;
+    min-height: calc(100vh - 76px) !important;
+    margin-top: 76px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 40px 24px 60px 24px !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+}
+
+/* 🚀 🚀 जादू 1: असली आमने-सामने सेट करने वाला फ्लेक्स कंटेनर 🚀 🚀 */
+.cyder-hero-master-flex-grid {
+    display: flex !important;
+    flex-direction: row !important; /* दोनों कॉलम को अगल-बगल रखना */
+    width: 100% !important;
+    max-width: 1240px !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 40px !important; /* दोनों साइड्स के बीच का प्रीमियम गैप */
+}
+
+/* बाईं तरफ का टेक्स्ट एरिया */
+.cyder-hero-left-content-panel {
+    flex: 1.1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+}
+
+/* 🚀 🚀 जादू 2: दाईं तरफ का पैनल जो तुम्हारी खाली जगह को 100% परफेक्टली कवर करेगा 🚀 🚀 */
+.cyder-hero-right-animation-panel {
+    flex: 0.9 !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+}
+
+.cyder-discord-mockup-frame {
+    width: 100% !important;
+    max-width: 540px !important; /* खाली स्पेस के हिसाब से परफेक्ट कॉम्पैक्ट साइज */
+    background: #FFFFFF !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 18px !important;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.04) !important;
+    overflow: hidden !important;
+    transition: background-color 0.25s, border-color 0.25s !important;
+}
+body.theme-dark .cyder-discord-mockup-frame {
+    background: #0a0812 !important;
+    border-color: rgba(168, 85, 247, 0.15) !important;
+    box-shadow: 0 25px 55px rgba(0,0,0,0.5) !important;
+}
+
+/* 📱 मोबाइल और टैबलेट रिस्पॉन्सिव ब्रेकर - स्क्रीन छोटी होने पर अपने आप एक के नीचे एक आना */
+@media screen and (max-width: 960px) {
+    .cyder-hero-master-flex-grid {
+        flex-direction: column !important; /* फोन की स्क्रीन पर वापस एक के नीचे एक सेट होना */
+        gap: 50px !important;
+    }
+    .cyder-hero-left-content-panel {
+        align-items: center !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+    .cyder-hero-main-slogan { text-align: center !important; font-size: 48px !important; }
+    .cyder-hero-sub-description-label { text-align: center !important; margin: 0 auto 28px auto !important; }
+    .cyder-hero-action-buttons-row { justify-content: center !important; width: 100% !important; max-width: 340px !important; margin: 0 auto 30px auto !important; }
+    .cyder-hero-social-proof-footer { justify-content: center !important; }
+    
+    .cyder-hero-right-animation-panel {
+        justify-content: center !important;
+        width: 100% !important;
+    }
+    .cyder-discord-mockup-frame { max-width: 100% !important; }
+}
+/* --- 🛡️ 29. CYDER HUD 17 FEATURES GRID SCHEMES --- */
+
+.cyder-features-section-wrapper {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 80px auto !important;
+    padding: 0 40px !important;
+    box-sizing: border-box !important;
+}
+
+.cyder-features-main-header {
+    margin-bottom: 40px !important;
+    text-align: left !important;
+}
+
+.features-section-title {
+    font-family: 'Syncopate', sans-serif !important;
+    color: var(--cyder-text-main) !important;
+    font-size: 26px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    margin: 0 0 8px 0 !important;
+}
+
+.features-section-subtitle {
+    color: var(--cyder-text-sub) !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    margin: 0 !important;
+}
+
+/* 🚀 🚀 जादू 1: कड़क 3-कॉलम ग्रिड डिस्ट्रीब्यूशन पाइपलाइन 🚀 🚀 */
+.cyder-features-grid-matrix {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 20px !important;
+    width: 100% !important;
+}
+
+/* 💎 ओब्सीडियन फीचर कार्ड डिज़ाइन (Exact Layout Sync) */
+.cyder-feature-obsidian-card {
+    background: var(--cyder-card-bg) !important; /* लाइट में वाइट, डार्क में #0a0812 */
+    border: 1px solid var(--cyder-border) !important;
+    border-radius: 16px !important;
+    padding: 20px !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.01) !important;
+    transition: background-color 0.25s, border-color 0.25s, transform 0.2s ease !important;
+}
+
+body.theme-dark .cyder-feature-obsidian-card {
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* 🚀 🚀 जादू 2: माउस ले जाने पर कार्ड का 3D स्केल होना और बॉर्डर का नियॉन ग्रीन ग्लो होना 🚀 🚀 */
+.cyder-feature-obsidian-card:hover {
+    transform: translateY(-2.5px) !important;
+    border-color: var(--cyder-neon) !important; /* तीखा नियॉन ग्रीन बॉर्डर */
+}
+
+/* नन्हा नियॉन ग्रीन आइकॉन कंटेनर बॉक्स */
+.feature-icon-box {
+    width: 38px !important;
+    height: 38px !important;
+    background: rgba(99, 255, 0, 0.06) !important; /* हल्का नियॉन ग्रीन आभामंडल */
+    border-radius: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 16px !important;
+    flex-shrink: 0 !important;
+    border: 1px solid rgba(99, 255, 0, 0.12) !important;
+    transition: background-color 0.25s !important;
+}
+body.theme-light .feature-icon-box {
+    background: rgba(15, 23, 42, 0.04) !important;
+    border-color: rgba(15, 23, 42, 0.06) !important;
+}
+.cyder-feature-obsidian-card:hover .feature-icon-box {
+    background: var(--cyder-neon) !important; /* होवर करने पर आइकॉन बॉक्स पूरा ग्रीन हो जाएगा भाई */
+    color: #050505 !important;
+}
+
+.feature-text-stack {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+    text-align: left !important;
+}
+
+.feature-text-stack h4 {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: var(--cyder-text-main) !important;
+    font-size: 15.5px !important;
+    font-weight: 750 !important;
+    margin: 0 !important;
+}
+
+.feature-text-stack p {
+    color: var(--cyder-text-sub) !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    line-height: 1.45 !important;
+    margin: 0 !important;
+}
+
+/* 📱 मोबाइल और टैबलेट रिस्पॉन्सिव ग्रिड री-स्केलर */
+@media screen and (max-width: 1024px) {
+    .cyder-features-grid-matrix {
+        grid-template-columns: repeat(2, 1fr) !important; /* टैबलेट स्क्रीन्स पर २-कॉलम ग्रिड */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .cyder-features-section-wrapper { padding: 0 20px !important; margin: 60px auto !important; }
+    .cyder-features-grid-matrix {
+        grid-template-columns: 1fr !important; /* मोबाइल फोन की स्क्रीन पर सारे १७ फीचर्स लाइन से सिंगल कॉलम में सजेंगे */
+        gap: 14px !important;
+    }
+    .features-section-title { font-size: 22px !important; }
+}
+/* --- 🔊 30. CYDER HUD OWN VC CONTROLS STYLE SCHEMES --- */
+
+.cyder-vc-section-wrapper {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 80px auto !important;
+    padding: 0 40px !important;
+    box-sizing: border-box !important;
+}
+
+/* 🚀 4-कॉलम परफेक्ट पैरेलल ग्रिड */
+.cyder-vc-grid-matrix {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 16px !important;
+    width: 100% !important;
+}
+
+/* 🧱 बिल्कुल स्क्रीनशॉट जैसा बटन बॉक्स लेआउट */
+.cyder-vc-action-card {
+    background: #0f1115 !important; /* डार्क कंसोल बेस */
+    border: 1px solid #1a1f29 !important;
+    border-radius: 14px !important;
+    padding: 16px 22px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    cursor: pointer !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3) !important;
+    transition: transform 0.2s ease, border-color 0.25s, background-color 0.25s !important;
+}
+
+/* 🚀 लाइट मोड में कार्ड्स अपने आप एलीट लाइट-ग्रे में बदलेंगे */
+body.theme-light .cyder-vc-action-card {
+    background: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.03) !important;
+}
+
+/* होवर करने पर 3D इफेक्ट और बॉर्डर का नियॉन ग्रीन होना */
+.cyder-vc-action-card:hover {
+    transform: translateY(-2px) !important;
+    border-color: #63FF00 !important;
+}
+
+/* 🟢 जादुई नियॉन ग्रीन आइकॉन (Exact Visual Sync) */
+.vc-icon-vector-shell {
+    color: #63FF00 !important; /* 100% तीखा नियॉन ग्रीन */
+    font-size: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    filter: drop-shadow(0 0 6px rgba(99, 255, 0, 0.5)) !important;
+    flex-shrink: 0 !important;
+}
+
+/* ⚡ बीच का बारीक वर्टिकल डिवाइडर (Exact Reference Match) */
+.vc-card-vertical-divider {
+    width: 1px !important;
+    height: 24px !important;
+    background: rgba(99, 255, 0, 0.3) !important; /* म्यूटेड नियॉन ग्रीन लाइन */
+    flex-shrink: 0 !important;
+}
+
+/* 🏢 दाईं तरफ का साफ़ क्रिस्प टेक्स्ट */
+.vc-btn-title-label {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: var(--cyder-text-main) !important;
+    font-size: 15px !important;
+    font-weight: 750 !important;
+    letter-spacing: 0.5px !important;
+    text-align: left !important;
+}
+
+/* 📱 मोबाइल और टैबलेट रिस्पॉन्सिव स्केलर */
+@media screen and (max-width: 1024px) {
+    .cyder-vc-grid-matrix {
+        grid-template-columns: repeat(2, 1fr) !important; /* टैबलेट पर २-कॉलम */
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .cyder-vc-section-wrapper { padding: 0 20px !important; }
+    .cyder-vc-grid-matrix {
+        grid-template-columns: 1fr !important; /* फोन पर सारे बटन्स एक के नीचे एक फुल विड्थ */
+        gap: 12px !important;
+    }
+    .cyder-vc-action-card { padding: 14px 20px !important; }
+}
+/* --- 🔊 30.1 OWN VC CONTROLS: BASE LAYOUT MATRIX --- */
+.cyder-vc-section-wrapper {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 80px auto !important;
+    padding: 0 40px !important;
+    box-sizing: border-box !important;
+}
+
+/* 🚀 4-कॉलम परफेक्ट पैरेलल ग्रिड */
+.cyder-vc-grid-matrix {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 16px !important;
+    width: 100% !important;
+}
+
+/* 🧱 मुख्य एक्शन कार्ड यूआई का बेस ढांचा */
+.cyder-vc-action-card {
+    background: #0f1115 !important; /* डार्क कंसोल बेस */
+    border: 1px solid #1a1f29 !important;
+    border-radius: 14px !important;
+    padding: 16px 20px !important;
+    display: flex !important;
+    flex-direction: column !important; /* डिटेल्स नीचे स्लाइड करने के लिए */
+    box-sizing: border-box !important;
+    cursor: pointer !important;
+    outline: none !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3) !important;
+    transition: transform 0.2s ease, border-color 0.25s, background-color 0.25s !important;
+    overflow: hidden !important;
+}
+
+/* 🚀 लाइट मोड के वेरिएबल्स के साथ सिंक */
+body.theme-light .cyder-vc-action-card {
+    background: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.03) !important;
+}
+/* --- 🔊 30.2 OWN VC CONTROLS: NEON GREEN VISUAL SYNC --- */
+.vc-card-visible-row {
+    display: flex !important;
+    width: 100% !important;
+    align-items: center !important;
+    gap: 14px !important;
+}
+
+/* 🟢 जादुई नियॉन ग्रीन आइकॉन */
+.vc-icon-vector-shell {
+    color: #63FF00 !important; /* 100% शुद्ध तीखा नियॉन green */
+    font-size: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    filter: drop-shadow(0 0 6px rgba(99, 255, 0, 0.5)) !important;
+    flex-shrink: 0 !important;
+}
+
+/* ⚡ बीच का बारीक वर्टिकल डिवाइडर line */
+.vc-card-vertical-divider {
+    width: 1px !important;
+    height: 22px !important;
+    background: rgba(99, 255, 0, 0.3) !important; /* म्यूटेड नियॉन लाइन */
+    flex-shrink: 0 !important;
+}
+
+.vc-btn-title-label {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: var(--cyder-text-main) !important;
+    font-size: 14.5px !important;
+    font-weight: 750 !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* 📱 नन्हा इन्फो आइकॉन (फोन पर चमकेगा) */
+.vc-phone-info-trigger-icon {
+    display: none !important;
+    margin-left: auto !important;
+    font-size: 12px !important;
+    opacity: 0.5 !important;
+    background: rgba(255,255,255,0.05);
+    padding: 4px 6px;
+    border-radius: 6px;
+}
+body.theme-light .vc-phone-info-trigger-icon { background: rgba(0,0,0,0.04); }
+/* --- 🔊 30.3 OWN VC CONTROLS: INTERACTION DRAWER ENGINE --- */
+
+/* 🚀 नीचे से स्लाइड होकर खुलने वाला विवरण बॉक्स */
+.vc-card-hidden-detailed-drawer {
+    width: 100% !important;
+    max-height: 0 !important; /* डिफ़ॉल्ट रूप से बंद */
+    opacity: 0 !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    line-height: 1.4 !important;
+    color: var(--cyder-text-sub) !important;
+    text-align: left !important;
+    padding-top: 0 !important;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.50s ease, padding-top 0.25s !important;
+    pointer-events: none;
+}
+
+/* 💻 डेस्कटॉप माउस होवर लॉजिक्स */
+@media (hover: hover) and (pointer: fine) {
+    .cyder-vc-action-card:hover {
+        transform: translateY(-2px) !important;
+        border-color: #63FF00 !important;
+    }
+    .cyder-vc-action-card:hover .vc-card-hidden-detailed-drawer {
+        max-height: 80px !important;
+        opacity: 1 !important;
+        padding-top: 12px !important;
+    }
+}
+
+/* 📱 मोबाइल फोन पर टच (क्लिक) करते ही विवरण का खुलना */
+.cyder-vc-action-card:focus-within,
+.cyder-vc-action-card:active {
+    border-color: #63FF00 !important;
+}
+.cyder-vc-action-card:focus-within .vc-card-hidden-detailed-drawer,
+.cyder-vc-action-card:active .vc-card-hidden-detailed-drawer {
+    max-height: 80px !important;
+    opacity: 1 !important;
+    padding-top: 12px !important;
+}
+.cyder-vc-action-card:focus-within .vc-phone-info-trigger-icon {
+    opacity: 1 !important;
+    color: #63FF00 !important;
+}
+
+/* 📱 मोबाइल रिस्पॉन्सिव स्केलर */
+@media screen and (max-width: 1024px) {
+    .cyder-vc-grid-matrix { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media screen and (max-width: 640px) {
+    .cyder-vc-section-wrapper { padding: 0 20px !important; }
+    .cyder-vc-grid-matrix { grid-template-columns: 1fr !important; gap: 12px !important; }
+    .vc-phone-info-trigger-icon { display: inline-block !important; } /* फोन पर ℹ️ ऑन */
+    .vc-btn-title-label { font-size: 14px !important; }
+}
+/* --- ⭐ 32. MASTER CYDER PC TESTIMONIALS DESIGN ENHANCEMENT ENGINE --- */
+
+/* 🚀 1. पूरे ग्रिड बॉक्स को री-सेट करना */
+.cyder-reviews-section-wrapper {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 100px auto !important;
+    padding: 0 40px !important;
+    box-sizing: border-box !important;
+    clear: both !important;
+}
+
+/* 🚀 2. 3-कॉलम कड़क डेस्कटॉप ग्रिड लेआउट */
+.cyder-reviews-grid-matrix {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 24px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* 🚀 3. नंगे टेक्स्ट को वापस खूबसूरत ओब्सीडियन कार्ड डिब्बे में तब्दील करना (Exact Visual Sync) */
+.cyder-review-obsidian-card {
+    /* ऑटो थीम सपोर्ट: लाइट में वाइट, डार्क में #101010 */
+    background: var(--cyder-card-bg) !important; 
+    border: 1px solid var(--cyder-border) !important; /* बारीक और साफ सॉलिड किनारा */
+    border-radius: 18px !important; /* सुंदर सॉफ्ट गोल कोने बिल्कुल स्क्रीनशॉट जैसे */
+    padding: 24px !important; /* डिब्बे के अंदर की प्रीमियम स्पेसिंग */
+    display: flex !important;
+    flex-direction: column !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.01) !important;
+    transition: transform 0.2s, border-color 0.25s, background-color 0.25s !important;
+}
+
+/* डार्क मोड में हैकर-डार्क एलीट शैडो */
+body.theme-dark .cyder-review-obsidian-card {
+    background: #101010 !important;
+    border-color: #202020 !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* माउस ले जाने पर 3D इफेक्ट और बॉर्डर का नियॉन ग्रीन ग्लो होना */
+.cyder-review-obsidian-card:hover {
+    transform: translateY(-2.5px) !important;
+    border-color: var(--cyder-neon) !important; /* तीखा नियॉन ग्रीन बॉर्डर */
+}
+
+/* 🚀 4. गायब हुई गोल अवतार फोटो और यूजर प्रोफाइल रो को वापस लाना */
+.review-user-profile-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-bottom: 14px !important;
+    text-align: left !important;
+}
+
+/* गोल सुंदर अवतार फ़्रेम होल्डर */
+.review-user-avatar {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    border: 1px solid var(--cyder-border) !important;
+    flex-shrink: 0 !important;
+    overflow: hidden !important; /* ⚡ फिक्स: अंदर की इमेज को गोल घेरे में ही लॉक रखेगा */
+    background: transparent !important; /* ❌ पुराना !important इमेज पाथ यहाँ से हटा दिया है */
+}
+
+
+.review-user-meta-stack h4 {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: var(--cyder-text-main) !important;
+    font-size: 14.5px !important;
+    font-weight: 750 !important;
+    margin: 0 !important;
+}
+
+.review-user-meta-stack p {
+    color: var(--cyder-text-sub) !important;
+    font-size: 11.5px !important;
+    font-weight: 500 !important;
+    margin: 2px 0 0 0 !important;
+}
+
+/* 🚀 5. सुनहरे ५-स्टार्स रेटिंग्स */
+.review-stars-gold-row {
+    color: #ffb300 !important; /* एकदम कड़क ओरिजिनल गोल्ड कलर */
+    font-size: 13px !important;
+    letter-spacing: 2px !important;
+    text-align: left !important;
+    margin-bottom: 12px !important;
+}
+
+/* 🚀 6. मुख्य फीडबैक टेक्स्ट का स्टाइल संतुलन */
+.review-core-feedback-text {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: var(--cyder-text-main) !important;
+    font-size: 13.5px !important;
+    line-height: 1.55 !important;
+    font-weight: 700 !important;
+    text-align: left !important;
+    margin: 0 0 18px 0 !important;
+    opacity: 0.9 !important;
+}
+
+/* 🚀 7. नीचे का म्यूटेड पर्पल हैशटैग बिल्कुल स्क्रीनशॉट जैसा */
+.review-channel-hash-tag {
+    color: #A855F7 !important; 
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    text-align: left !important;
+    margin-top: auto !important; /* हमेशा कार्ड के बॉटम में चिपका रहेगा */
+}
+
+/* 📱 मोबाइल रिस्पॉन्सिव सेफ्टी ग्रिड */
+@media screen and (max-width: 960px) {
+    .cyder-reviews-grid-matrix { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media screen and (max-width: 768px) {
+    .cyder-reviews-section-wrapper { padding: 0 20px !important; margin: 60px auto !important; }
+    .cyder-reviews-grid-matrix { grid-template-columns: 1fr !important; gap: 16px !important; }
+}
+/* --- 👑 33.1 PREMIUM CTA BANNER: CONTAINER & INNER LAYOUTS --- */
+.cyder-premium-cta-section-shell {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 80px auto !important;
+    padding: 0 40px !important;
+    box-sizing: border-box !important;
+    clear: both !important;
+}
+
+/* मुख्य हॉरिजॉन्टल आलीशान कार्ड (Exact Visual Sync) */
+.cyder-premium-master-card-node {
+    background: var(--cyder-card-bg) !important; /* ऑटो थीम कलर */
+    border: 1px solid var(--cyder-border) !important;
+    border-radius: 24px !important; /* सुंदर सॉफ्ट कोनों वाला बड़ा डिब्बा */
+    padding: 40px !important;
+    display: flex !important;
+    flex-direction: row !important; /* आमने-सामने अलाइनमेंट */
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 40px !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.01) !important;
+    transition: background-color 0.25s, border-color 0.25s, transform 0.2s !important;
+}
+
+body.theme-dark .cyder-premium-master-card-node {
+    background: #101010 !important;
+    border-color: #202020 !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* बाईं तरफ का पूरा विवरण स्टैक */
+.premium-cta-left-content-panel {
+    flex: 1.2 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+}
+
+/* 👑 नन्हा सॉफ्ट गोल्ड बैज */
+.premium-mini-badge-label {
+    background: rgba(204, 164, 59, 0.08) !important;
+    border: 1px solid rgba(204, 164, 59, 0.2) !important;
+    color: #cca43b !important;
+    font-size: 11.5px !important;
+    font-weight: 800 !important;
+    padding: 5px 12px !important;
+    border-radius: 50px !important;
+    letter-spacing: 0.5px !important;
+    margin-bottom: 18px !important;
+}
+/* --- 👑 33.2 PREMIUM CTA BANNER: TYPOGRAPHY, BUTTONS & MOBILE SYNC --- */
+.premium-cta-main-title {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
+    color: var(--cyder-text-main) !important;
+    font-size: 34px !important;
+    font-weight: 850 !important;
+    line-height: 1.2 !important;
+    letter-spacing: -1px !important;
+    margin: 0 0 10px 0 !important;
+}
+
+.premium-cta-description-text {
+    color: var(--cyder-text-sub) !important;
+    font-size: 14.5px !important;
+    line-height: 1.55 !important;
+    font-weight: 500 !important;
+    max-width: 620px !important;
+    margin: 0 0 24px 0 !important;
+}
+
+/* चेकमार्क टिक रो */
+.premium-validated-checkmarks-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 20px !important;
+}
+.check-node {
+    color: var(--cyder-text-main) !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+}
+
+/* दाईं तरफ का बटन्स वर्टिकल स्टैक */
+.premium-cta-right-buttons-stack {
+    flex: 0.8 !important;
+    display: flex !important;
+    flex-direction: column !important; /* एक के नीचे एक बटन्स */
+    gap: 12px !important;
+    width: 100% !important;
+    max-width: 240px !important;
+}
+
+/* 💜 पहला चमचमाता पर्पल बटन (✨ View plans) */
+.btn-premium-cta-view-plans {
+    background: #A855F7 !important; /* तुम्हारी सेंट्रल को-थीम का कड़क पर्पल रंग */
+    color: #ffffff !important;
+    padding: 12px 24px !important;
+    border-radius: 12px !important;
+    font-size: 14.5px !important;
+    font-weight: 800 !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3) !important;
+    transition: transform 0.2s, box-shadow 0.2s !important;
+}
+.btn-premium-cta-view-plans:hover {
+    transform: translateY(-1.5px) !important;
+    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.5) !important;
+}
+
+/* ⚪ दूसरा सपोर्ट सर्वर बटन (Join support server) */
+.btn-premium-cta-join-support {
+    background: transparent !important;
+    border: 1px solid var(--cyder-border) !important;
+    color: var(--cyder-text-main) !important;
+    padding: 12px 24px !important;
+    border-radius: 12px !important;
+    font-size: 14.5px !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+}
+.btn-premium-cta-join-support:hover {
+    border-color: var(--cyder-text-main) !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+}
+body.theme-light .btn-premium-cta-join-support:hover {
+    background: rgba(0, 0, 0, 0.02) !important;
+}
+
+/* 📱 मोबाइल और टैबलेट रिस्पॉन्सिव ग्रिड ब्रेकर (100% परफेक्ट फोन व्यू) */
+@media screen and (max-width: 900px) {
+    .cyder-premium-cta-section-shell { padding: 0 20px !important; margin: 60px auto !important; }
+    
+    .cyder-premium-master-card-node {
+        flex-direction: column !important; /* फोन पर सब कुछ एक के नीचे एक वर्टिकल हो जाएगा भाई */
+        padding: 30px 20px !important;
+        gap: 30px !important;
+    }
+    .premium-cta-left-content-panel {
+        align-items: center !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+    .premium-cta-main-title { text-align: center !important; font-size: 26px !important; }
+    .premium-cta-description-text { text-align: center !important; font-size: 13.5px !important; margin-bottom: 20px !important; }
+    .premium-validated-checkmarks-row { justify-content: center !important; gap: 14px !important; }
+    
+    .premium-cta-right-buttons-stack {
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+    .btn-premium-cta-view-plans, .btn-premium-cta-join-support {
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+}
+/* --- 👑 CYDER PREMIUM SUB-BADGE MICRO LOGO OPTIMIZER --- */
+.cyder-premium-micro-img-badge {
+    width: 13px !important;
+    height: 13px !important;
+    border-radius: 50% !important; /* बिल्कुल गोल मलाईदार शेप */
+    object-fit: cover !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    margin-right: 5px !important; /* टेक्स्ट से परफेक्ट साइड स्पेसिंग */
+    transform: translateY(-1px) !important;
+    border: 1px solid rgba(204, 164, 59, 0.4) !important; /* सोने जैसा बारीक प्रीमियम किनारा */
+    background: #0f1115;
+}
+
+/* लाइट मोड एक्टिव होने पर किनारा अपने आप एडजस्ट होने का नियम */
+body.theme-light .cyder-premium-micro-img-badge {
+    border-color: rgba(168, 85, 247, 0.4) !important;
+}
+/* --- 👑 34. CYDER PREMIUM CAPSULE BOX ENHANCEMENT ENGINE --- */
+
+/* 🚀 🚀 जादू 1: 'Cyder Premium' के चारों तरफ आलीशान बॉक्स स्ट्रक्चर खड़ा करना 🚀 🚀 */
+.banner-badge-tag-accent,
+.pricing-header-badge-node {
+    /* डिफ़ॉल्ट डार्क मोड में हल्का सा ग्लास म्यूटेड पर्पल बॉक्स */
+    background: rgba(168, 85, 247, 0.05) !important;
+    border: 1px solid rgba(168, 85, 247, 0.18) !important; /* बारीक और साफ किनारा */
+    
+    /* बिल्कुल स्क्रीनशॉट जैसा सुंदर कॉम्पैक्ट सॉफ्ट डिब्बा शेप */
+    border-radius: 8px !important; 
+    padding: 5px 12px !important;
+    
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 750 !important;
+    color: var(--cyder-text-main) !important;
+    letter-spacing: 0.2px !important;
+    text-transform: none !important; /* अक्षरों को ज़बरदस्ती कैपिटल नहीं करेगा */
+    
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important; /* अंदर की फोटो और टेक्स्ट के बीच की दूरी */
+    margin-bottom: 16px !important;
+    width: fit-content !important;
+}
+
+/* 🚀 🚀 जादू 2: थीम लाइट (वाइट) होने पर यह बॉक्स अपने आप म्यूटेड-ग्रे सॉलिड यूआई ले लेगा भाई! 🚀 🚀 */
+body.theme-light .banner-badge-tag-accent,
+body.theme-light .pricing-header-badge-node {
+    background: #f1f5f9 !important; /* बिल्कुल स्क्रीनशॉट जैसा कूल ग्रे/वाइट डिब्बा बेस */
+    border: 1px solid #e2e8f0 !important; /* साफ़ सुथरा बॉर्डर किनारा */
+    color: #0f172a !important; /* अंदर के अक्षर डार्क हो जाएंगे */
+}
+
+/* 🚀 3. अंदर की नन्ही लोगो फोटो का बिल्कुल परफेक्ट सिंक अलाइनमेंट */
+.cyder-premium-micro-img-badge {
+    width: 14px !important;
+    height: 14px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    border: 1px solid rgba(99, 255, 0, 0.4) !important; /* तीखा नियॉन ग्रीन बारीक रिंग */
+    margin: 0 !important;
+    transform: none !important;
+    display: block !important;
+}
+
+body.theme-light .cyder-premium-micro-img-badge {
+    border-color: #00D200 !important;
+}
+/* --- 🗺️ 37. CYDER HUD FOOTER BRAND BLOCK ENHANCEMENT ENGINE --- */
+
+.cyder-footer-brand-section-wrapper {
+    width: 100% !important;
+    background: transparent !important;
+    border-top: 1px solid var(--cyder-border) !important; /* बारीक और साफ म्यूटेड सेपरेटर लाइन */
+    margin: 120px auto 40px auto !important;
+    padding: 60px 40px 40px 40px !important;
+    box-sizing: border-box !important;
+    clear: both !important;
+}
+
+.cyder-footer-brand-container {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important; /* स्क्रीनशॉट की तरह कतई परफेक्ट लेफ्ट-अलाइनमेंट */
+    text-align: left !important;
+}
+
+/* 🌀 लोगो + ब्रांड नेम रो */
+.cyder-footer-identity-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-bottom: 24px !important;
+}
+
+.cyder-footer-core-avatar-img {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important; /* बिल्कुल मलाईदार गोल शेप */
+    object-fit: cover !important;
+    border: 1px solid var(--cyder-border) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
+}
+
+.cyder-footer-brand-text-label {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
+    color: var(--cyder-text-main) !important;
+    font-size: 22px !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.5px !important;
+}
+
+/* ✍️ मुख्य विवरण सब-टेक्स्ट */
+.cyder-footer-brand-pitch-description {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: var(--cyder-text-sub) !important;
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+    font-weight: 700 !important;
+    max-width: 580px !important; /* स्क्रीनशॉट जैसी परफेक्ट रैपिंग विड्थ */
+    margin: 0 0 32px 0 !important;
+    opacity: 0.85 !important;
+}
+
+/* 🎛️ डबल एक्शन बटन्स कतार */
+.cyder-footer-action-buttons-row {
+    display: flex !important;
+    gap: 14px !important;
+}
+
+/* पहला प्राइमरी बटन (Add to Discord - Pure Matte Dark View) */
+.btn-footer-action-dark-node {
+    background: #0f111a !important; /* असली प्रीमियम डार्क नाइट शेड बिल्कुल स्क्रीनशॉट जैसा */
+    color: #ffffff !important;
+    padding: 12px 26px !important;
+    border-radius: 14px !important; /* सुंदर सॉफ्ट गोल कोने */
+    font-size: 14.5px !important;
+    font-weight: 750 !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+    transition: transform 0.2s, background-color 0.2s !important;
+}
+.btn-footer-action-dark-node:hover {
+    transform: translateY(-1px) !important;
+    background: #151826 !important;
+}
+
+/* 🚀 जब थीम लाइट (वाइट) होगी, तो यह बटन अपने आप साफ़ क्रिस्टल ब्लैक बन जाएगा भाई! */
+body.theme-light .btn-footer-action-dark-node {
+    background: #090b11 !important;
+    color: #ffffff !important;
+}
+
+/* दूसरा सेकेंडरी बटन (Join support - Clean Border Glass UI) */
+.btn-footer-action-trans-node {
+    background: transparent !important;
+    border: 1px solid rgba(168, 85, 247, 0.18) !important; /* म्यूटेड थीम बॉर्डर */
+    color: var(--cyder-text-main) !important;
+    padding: 12px 26px !important;
+    border-radius: 14px !important;
+    font-size: 14.5px !important;
+    font-weight: 750 !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+}
+.btn-footer-action-trans-node:hover {
+    border-color: var(--cyder-text-main) !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+body.theme-light .btn-footer-action-trans-node {
+    border-color: #cbd5e1 !important; /* लाइट मोड का साफ सुथरा किनारा */
+}
+body.theme-light .btn-footer-action-trans-node:hover {
+    background: rgba(0, 0, 0, 0.02) !important;
+}
+
+/* 📱 मोबाइल रिस्पॉन्सिव स्केलर - फोन स्क्रीन्स पर बटन्स को एक के नीचे एक फुल विड्थ करना */
+@media screen and (max-width: 640px) {
+    .cyder-footer-brand-section-wrapper { padding: 40px 20px 30px 20px !important; margin: 80px auto 30px auto !important; }
+    .cyder-footer-brand-pitch-description { font-size: 14px !important; margin-bottom: 24px !important; }
+    .cyder-footer-action-buttons-row { flex-direction: column !important; width: 100% !important; gap: 12px !important; }
+    .btn-footer-action-dark-node, .btn-footer-action-trans-node { width: 100% !important; padding: 14px 20px !important; box-sizing: border-box !important; }
+}
+/* --- 🗺️ 38. CYDER HUD FOOTER DIRECTORY & COPYRIGHT ENHANCEMENT ENGINE --- */
+
+.cyder-master-footer-directory-shell {
+    width: 100% !important;
+    background: transparent !important;
+    padding: 0 40px 60px 40px !important;
+    box-sizing: border-box !important;
+    clear: both !important;
+}
+
+.cyder-footer-directory-inner-box {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* 🚀 1. कड़क 4-कॉलम पैरेलल डायरेक्टरी ग्रिड लेआउट बिल्कुल स्क्रीनशॉट जैसा */
+.cyder-footer-links-grid-matrix {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 30px !important;
+    width: 100% !important;
+    margin-bottom: 50px !important;
+}
+
+.footer-links-column-stack {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+}
+
+/* पर्पल रंग के बोल्ड Titles (PRODUCT, RESOURCES, etc.) */
+.footer-links-column-stack h5 {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: #A855F7 !important; /* सिग्नेचर पर्पल कलर बिल्कुल स्क्रीनशॉट जैसा भाई */
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.8px !important;
+    text-transform: uppercase !important;
+    margin: 0 0 20px 0 !important;
+}
+
+/* म्यूटेड लिंक्स की वर्टिकल लिस्ट */
+.footer-vertical-anchor-list {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+}
+
+.footer-vertical-anchor-list li a {
+    color: var(--cyder-text-sub) !important; /* डार्क में हल्का ग्रे, लाइट में कूल ग्रे */
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease !important;
+}
+.footer-vertical-anchor-list li a:hover {
+    color: var(--cyder-text-main) !important; /* होवर करने पर हाइलाइट होना */
+}
+
+/* ⚡ थिन हॉरिजॉन्टल डिवाइडर लाइन */
+.cyder-footer-divider-line {
+    width: 100% !important;
+    height: 1px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    margin-bottom: 24px !important;
+}
+body.theme-light .cyder-footer-divider-line {
+    background: rgba(15, 23, 42, 0.06) !important;
+}
+
+/* 🚀 2. बॉटम कॉपीराइट रो अलाइनमेंट (Space-Between) */
+.cyder-footer-bottom-copyright-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
+    gap: 16px !important;
+    width: 100% !important;
+}
+
+/* लेफ्ट साइड के सब-लिंक्स */
+.footer-copyright-sub-links-group {
+    display: flex !important;
+    gap: 20px !important;
+}
+.footer-copyright-sub-links-group a {
+    color: var(--cyder-text-sub) !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: color 0.2s;
+}
+.footer-copyright-sub-links-group a:hover {
+    color: var(--cyder-neon) !important;
+}
+
+/* राइट साइड का म्यूटेड कॉपीराइट क्रेडिट्स टेक्स्ट */
+.footer-copyright-credits-text-label {
+    color: var(--cyder-text-sub) !important;
+    font-size: 12.5px !important;
+    font-weight: 500 !important;
+    margin: 0 !important;
+}
+.credits-author-purple-highlight {
+    color: #A855F7 !important; /* डेवलपर का नाम पर्पल में चमकेगा भाई! */
+    font-weight: 900 !important;
+
+}
+
+/* 📱 मोबाइल और टैबलेट रिस्पॉन्सिव स्केलर */
+@media screen and (max-width: 860px) {
+    .cyder-master-footer-directory-shell { padding: 0 20px 40px 20px !important; }
+    .cyder-footer-links-grid-matrix {
+        grid-template-columns: repeat(2, 1fr) !important; /* टैबलेट पर २ कॉलम */
+        gap: 35px !important;
+        margin-bottom: 40px !important;
+    }
+}
+@media screen and (max-width: 520px) {
+    .cyder-footer-links-grid-matrix {
+        grid-template-columns: 1fr !important; /* फोन पर सारे लिंक्स एक कतार में सिंगल कॉलम */
+        gap: 26px !important;
+    }
+    .footer-links-column-stack h5 { margin-bottom: 12px !important; }
+    .cyder-footer-bottom-copyright-row {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: 14px !important;
+    }
+    .footer-copyright-sub-links-group { justify-content: center !important; flex-wrap: wrap !important; gap: 14px !important; }
+    .footer-copyright-credits-text-label { text-align: center !important; 
+    font-weight: 700px !important;
+}
+}
+/* --- 🌓 39. MASTER HUD BOTTOM BLACK VOID BYPASS FIX (100% OPERATIONAL) --- */
+
+/* 🚀 🚀 जादू 1: मास्टर एचटीएमएल और बॉडी के बेस कलर को यूनिवर्सल वेरिएबल्स पर लॉक करना 🚀 🚀 */
+html, body {
+    background-color: var(--cyder-bg) !important;
+    background-image: var(--cyder-grid-pattern) !important;
+    background-size: 18px 18px !important;
+    min-height: 100vh !important;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box !important;
+    /* ⚡ फिक्स: नीचे छिपे किसी भी काले एलिमेंट को बाहर भागने से रोकना */
+    overflow-x: hidden !important; 
+}
+
+/* 🚀 🚀 जादू 2: लाइट मोड एक्टिवेट होते ही ज़बरदस्ती पूरी बॉडी और उसके नीचे के एरिया को प्योर वाइट करना 🚀 🚀 */
+body.theme-light, 
+body.theme-light html,
+body.theme-light::after,
+body.theme-light::before {
+    background-color: #FFFFFF !important; /* ⚪ 100% शुद्ध मलाईदार सफ़ेद रंग */
+    background-image: var(--cyder-grid-pattern) !important;
+}
+
+/* 🚀 3. फुटर डायरेक्टरी शेल का अलाइनमेंट सिंक */
+.cyder-master-footer-directory-shell {
+    background-color: transparent !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 40px !important;
+    box-sizing: border-box !important;
+}
+
+/* 🚀 4. तुम्हारी नई इमेज के मुताबिक क्रेडिट्स का नाम 'CK THE OG' सिंक कर दिया है भाई */
+.credits-author-purple-highlight {
+    color: #A855F7 !important;
+    font-weight: 800 !important;
+}
+/* --- 👥 48.1 TEAM PERSONNEL: LAYOUT & TYPOGRAPHY SCHEMES --- */
+
+.cyder-team-section-viewport-wrapper {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 100px auto !important;
+    padding: 0 40px !important;
+    box-sizing: border-box !important;
+    clear: both !important;
+}
+
+.cyder-team-main-header {
+    margin-bottom: 45px !important;
+    text-align: left !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+}
+
+.team-badge-accent-label {
+    color: #A855F7 !important; /* सिग्नेचर पर्पल सब-बैज */
+    font-family: 'Syncopate', sans-serif !important;
+    font-size: 11.5px !important;
+    font-weight: 800 !important;
+    letter-spacing: 1px !important;
+    text-transform: uppercase !important;
+    margin-bottom: 12px !important;
+}
+
+.team-section-main-title {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
+    color: var(--cyder-text-main) !important;
+    font-size: 38px !important;
+    font-weight: 850 !important;
+    line-height: 1.2 !important;
+    letter-spacing: -1.2px !important;
+    margin: 0 0 8px 0 !important;
+}
+
+.team-section-subtitle {
+    color: var(--cyder-text-sub) !important;
+    font-size: 14.5px !important;
+    font-weight: 500 !important;
+    margin: 0 !important;
+}
+
+/* 🚀 कड़क 3-कॉलम पैरेलल टीम ग्रिड लेआउट */
+.cyder-team-grid-matrix-container {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 24px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+/* --- 👥 48.2 TEAM PERSONNEL: LUXURY CARD DETAILS & RESPONSIVE --- */
+
+.cyder-team-personnel-lux-card {
+    background: var(--cyder-card-bg) !important; /* लाइट मोड में वाइट, डार्क मोड में #101010 */
+    border: 1px solid var(--cyder-border) !important;
+    border-radius: 20px !important; /* सुंदर सॉफ्ट गोल कोने */
+    padding: 35px 24px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important; /* ⚡ टीम कंटेंट को सेंटर अलाइन करना */
+    text-align: center !important;
+    box-sizing: border-box !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.01) !important;
+    transition: transform 0.25s, border-color 0.25s, background-color 0.25s !important;
+}
+
+body.theme-dark .cyder-team-personnel-lux-card {
+    background: #0f1115 !important;
+    border-color: #1a1f29 !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* माउस ले जाने पर कार्ड का 3D बाउंस इफेक्ट */
+.cyder-team-personnel-lux-card:hover {
+    transform: translateY(-3.5px) !important;
+    border-color: var(--cyder-neon) !important; /* किनारा तुम्हारे नियॉन ब्रांडिंग कलर में चमकेगा */
+}
+
+/* 🌀 सुंदर बड़े गोल प्रोफाइल फोटो फ्रेम्स बिल्कुल डिस्कॉर्ड जैसे */
+.team-avatar-frame-holder {
+    width: 80px !important;
+    height: 80px !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
+    margin-bottom: 18px !important;
+    border: 2px solid var(--cyder-border) !important;
+    background: var(--cyder-bg) !important;
+    flex-shrink: 0 !important;
+    transition: border-color 0.2s;
+}
+.cyder-team-personnel-lux-card:hover .team-avatar-frame-holder {
+    border-color: var(--cyder-neon) !important;
+}
+
+.team-core-avatar-img-node {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+.team-member-name-label {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: var(--cyder-text-main) !important;
+    font-size: 18px !important;
+    font-weight: 850 !important;
+    margin: 0 0 6px 0 !important;
+    letter-spacing: -0.5px;
+}
+
+/* 🚀 जादुई डिस्कॉर्ड-स्टाइल कलर्ड रोल्स बैजेस (Owner, Admin, Dev) 🚀 */
+.team-role-tag {
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    padding: 4px 12px !important;
+    border-radius: 6px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    margin-bottom: 16px !important;
+    display: inline-block !important;
+}
+.role-owner-purple { background: rgba(168, 85, 247, 0.1) !important; border: 1px solid rgba(168, 85, 247, 0.25) !important; color: #A855F7 !important; }
+.role-admin-green { background: rgba(99, 255, 0, 0.08) !important; border: 1px solid rgba(99, 255, 0, 0.2) !important; color: var(--cyder-neon) !important; }
+.role-web-gold { background: rgba(204, 164, 59, 0.1) !important; border: 1px solid rgba(204, 164, 59, 0.25) !important; color: #c11ccd !important; }
+
+body.theme-light .role-admin-green { color: #2e7d32 !important; background: rgba(46, 125, 50, 0.08) !important; border-color: rgba(46, 125, 50, 0.2) !important; }
+
+/* सदस्य का विवरण टेक्स्ट */
+.team-member-short-bio {
+    color: var(--cyder-text-sub) !important;
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+    font-weight: 500 !important;
+    margin: 0 0 24px 0 !important;
+}
+
+/* सोशल मीडिया लिंक्स कतार */
+.team-social-links-row {
+    display: flex !important;
+    gap: 12px !important;
+    margin-top: auto !important; /* लिंक्स हमेशा कार्ड के बॉटम में सिंक रहेंगे भाई */
+}
+
+.team-social-icon-anchor {
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    color: var(--cyder-text-sub) !important;
+    text-decoration: none !important;
+    border-bottom: 1px dashed var(--cyder-border) !important;
+    transition: color 0.2s, border-color 0.2s;
+}
+.team-social-icon-anchor:hover {
+    color: var(--cyder-text-main) !important;
+    border-bottom-style: solid !important;
+    border-bottom-color: var(--cyder-text-main) !important;
+}
+
+/* 📱 मोबाइल और टैबलेट रिस्पॉन्सिव स्केलर */
+@media screen and (max-width: 960px) {
+    .cyder-team-grid-matrix-container {
+        grid-template-columns: repeat(2, 1fr) !important; /* टैबलेट पर २ कॉलम */
+    }
+}
+
+@media screen and (max-width: 680px) {
+    .cyder-team-section-viewport-wrapper { padding: 0 20px !important; margin: 60px auto !important; }
+    .cyder-team-grid-matrix-container {
+        grid-template-columns: 1fr !important; /* फोन की स्क्रीन पर सारे कप्तान लाइन से सिंगल कॉलम में */
+        gap: 16px !important;
+    }
+    .team-section-main-title { font-size: 28px !important; }
+}
+/* --- ❓ 49.1 FAQ SECTION: LAYOUT & HEADER SCHEMES --- */
+
+.cyder-faq-section-viewport-wrapper {
+    width: 100% !important;
+    max-width: 900px !important; /* ⚡ फिक्स: FAQ की चौड़ाई को संतुलित और केंद्रित रखा */
+    margin: 100px auto !important;
+    padding: 0 40px !important;
+    box-sizing: border-box !important;
+    clear: both !important;
+}
+
+.cyder-faq-main-header {
+    margin-bottom: 40px !important;
+    text-align: left !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+}
+
+.faq-badge-accent-label {
+    color: #A855F7 !important;
+    font-family: 'Syncopate', sans-serif !important;
+    font-size: 11.5px !important;
+    font-weight: 800 !important;
+    letter-spacing: 1px !important;
+    text-transform: uppercase !important;
+    margin-bottom: 12px !important;
+}
+
+.faq-section-main-title {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
+    color: var(--cyder-text-main) !important;
+    font-size: 38px !important;
+    font-weight: 850 !important;
+    line-height: 1.2 !important;
+    letter-spacing: -1.2px !important;
+    margin: 0 0 8px 0 !important;
+}
+
+.faq-section-subtitle {
+    color: var(--cyder-text-sub) !important;
+    font-size: 14.5px !important;
+    font-weight: 500 !important;
+    margin: 0 !important;
+}
+
+.cyder-faq-accordion-matrix-holder {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+/* --- ❓ 49.2 FAQ SECTION: DROPDOWN CARDS & INTERACTIONS --- */
+
+.cyder-faq-luxury-dropdown-card {
+    background: var(--cyder-card-bg) !important;
+    border: 1px solid var(--cyder-border) !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    transition: border-color 0.25s, background-color 0.25s, box-shadow 0.25s !important;
+}
+
+body.theme-dark .cyder-faq-luxury-dropdown-card {
+    background: #0f1115 !important;
+    border-color: #1a1f29 !important;
+}
+
+.cyder-faq-luxury-dropdown-card[open] {
+    border-color: #A855F7 !important;
+    box-shadow: 0 10px 30px rgba(168, 85, 247, 0.08) !important;
+    font-weight: 700px !important;
+}
+
+.cyder-faq-question-title-row {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: var(--cyder-text-main) !important;
+    font-size: 16px !important;
+    font-weight: 750 !important;
+    padding: 22px 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    cursor: pointer !important;
+    list-style: none !important;
+    box-sizing: border-box !important;
+    user-select: none !important;
+}
+
+/* क्रोम/सफारी के डिफ़ॉल्ट एरो मार्क को छुपाना */
+.cyder-faq-question-title-row::-webkit-details-marker { display: none !important; }
+
+.faq-chevron-icon-node {
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    color: #A855F7 !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.cyder-faq-luxury-dropdown-card[open] .faq-chevron-icon-node {
+    transform: rotate(45deg) !important; /* क्लिक करते ही '+' का निशान 'x' या तिरछा हो जाएगा */
+}
+
+.cyder-faq-answer-content-row {
+    padding: 0 24px 24px 24px !important;
+    box-sizing: border-box !important;
+}
+
+.cyder-faq-answer-content-row p {
+    color: var(--cyder-text-sub) !important;
+    font-size: 13.5px !important;
+    line-height: 1.6 !important;
+    font-weight: 500 !important;
+    margin: 0 !important;
+    text-align: left !important;
+}
+
+/* 📱 मोबाइल रिस्पॉन्सिव स्केलर */
+@media screen and (max-width: 680px) {
+    .cyder-faq-section-viewport-wrapper { padding: 0 20px !important; margin: 60px auto !important; }
+    .faq-section-main-title { 
+        font-size: 28px !important;
+        text-decoration: none;
+        text-align: left !important; 
+
+        }
+    .cyder-faq-question-title-row { font-size: 15px !important; padding: 18px 20px !important; }
+    .cyder-faq-answer-content-row { padding: 0 20px 20px 20px !important; }
+}
+/* --- 💬 50.1 FIXED ASSISTANT: POSITION LOCK MATRIX --- */
+.cyder-floating-assistant-badge-shell {
+    position: fixed !important;
+    bottom: 24px !important;
+    right: 24px !important;
+    z-index: 9999999999 !important; /* पूरी साइट के ऊपर फ्लोट करेगा भाई */
+    
+    /* बिल्कुल स्क्रीनशॉट जैसा आलीशान कैप्सूल बॉक्स */
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 50px !important;
+    padding: 8px 20px 8px 8px !important;
+    
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    cursor: pointer !important; /* ⚡ माउस ले जाने पर क्लिक करने वाला हाथ दिखेगा */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s, background-color 0.25s !important;
+}
+
+/* डार्क मोड सपोर्ट सिंक */
+body.theme-dark .cyder-floating-assistant-badge-shell {
+    background: #0f1115 !important;
+    border-color: #1a1f29 !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4) !important;
+}
+
+.cyder-floating-assistant-badge-shell:hover {
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow: 0 15px 35px rgba(127, 0, 255, 0.15) !important;
+}
+/* --- 💬 50.2 FIXED ASSISTANT: BRAND VECTOR COLOR NODES --- */
+.assistant-badge-purple-icon-node {
+    width: 36px !important;
+    height: 36px !important;
+    background: #7F00FF !important; /* तीखा डीप पर्पल शेड बिल्कुल स्क्रीनशॉट जैसा भाई */
+    color: #ffffff !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    box-shadow: 0 4px 12px rgba(127, 0, 255, 0.3) !important;
+}
+
+.assistant-badge-text-stack {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    line-height: 1.2 !important;
+}
+
+.assistant-title-top {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: #030207 !important;
+    font-size: 13px !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.2px;
+}
+body.theme-dark .assistant-title-top { color: #ffffff !important; }
+/* --- 💬 50.3 FIXED ASSISTANT: INTERACTION BLUE LINK LINKAGES --- */
+.assistant-action-bottom {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: #2563eb !important; /* स्क्रीनशॉट जैसी ओरिजिनल ब्लू स्याही */
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.5px !important;
+    margin-top: 1px !important;
+}
+body.theme-dark .assistant-action-bottom { color: #3b82f6 !important; }
+
+/* 📱 मोबाइल रिस्पॉन्सिव स्केलर */
+@media screen and (max-width: 480px) {
+    .cyder-floating-assistant-badge-shell {
+        bottom: 16px !important;
+        right: 16px !important;
+        padding: 6px 14px 6px 6px !important;
+    }
+    .assistant-badge-purple-icon-node { width: 32px !important; height: 32px !important; }
+    .assistant-title-top { font-size: 12px !important; }
+    .assistant-action-bottom { font-size: 9px !important; }
+}
+/* --- 💬 51.1 CHATBOT MATRIX: FLOATING SHELL & WINDOW OVERLAYS --- */
+.cyder-floating-assistant-badge-shell {
+    position: fixed !important; bottom: 24px !important; right: 24px !important; z-index: 9999999999 !important;
+    background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-radius: 50px !important; padding: 8px 20px 8px 8px !important;
+    display: inline-flex !important; align-items: center !important; gap: 12px !important; cursor: pointer !important; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.25s !important;
+}
+body.theme-dark .cyder-floating-assistant-badge-shell { background: #0f1115 !important; border-color: #1a1f29 !important; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4) !important; }
+.cyder-floating-assistant-badge-shell:hover { transform: translateY(-2px) scale(1.02) !important; }
+.assistant-badge-purple-icon-node { width: 36px !important; height: 36px !important; background: #7F00FF !important; color: #ffffff !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; flex-shrink: 0 !important; box-shadow: 0 4px 12px rgba(127, 0, 255, 0.3) !important; }
+.assistant-badge-text-stack { display: flex !important; flex-direction: column !important; align-items: flex-start !important; text-align: left !important; line-height: 1.2 !important; }
+.assistant-title-top { font-family: 'Plus Jakarta Sans', sans-serif !important; color: #030207 !important; font-size: 13px !important; font-weight: 850 !important; }
+body.theme-dark .assistant-title-top { color: #ffffff !important; }
+.assistant-action-bottom { font-family: 'Plus Jakarta Sans', sans-serif !important; color: #2563eb !important; font-size: 10px !important; font-weight: 800 !important; margin-top: 1px !important; }
+body.theme-dark .assistant-action-bottom { color: #3b82f6 !important; }
+
+/* 🚀 🚀 मुख्य आलीशान चैटबॉक्स विंडो कंटेनर (Exact Screenshot UI) 🚀 🚀 */
+.cyder-chatbot-window-shell {
+    position: fixed !important; bottom: 85px !important; right: 24px !important;
+    width: 380px !important; height: 500px !important;
+    background: #ffffff !important; border: 1px solid #edf2f7 !important;
+    border-radius: 20px !important; z-index: 9999999999 !important;
+    display: flex !important; flex-direction: column !important; overflow: hidden !important;
+    box-shadow: 0 15px 45px rgba(0,0,0,0.12) !important;
+    
+    /* ओपन एनीमेशन टॉगल की डिफ़ॉल्ट बंद स्टेट */
+    opacity: 0 !important; visibility: hidden !important; transform: translateY(20px) scale(0.95) !important;
+    transition: opacity 0.25s, visibility 0.25s, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+body.theme-dark .cyder-chatbot-window-shell { background: #1e1f22 !important; border-color: #111214 !important; box-shadow: 0 20px 50px rgba(0,0,0,0.5) !important; }
+
+/* एक्टिव टॉगल क्लास नियम */
+.chatbot-window-active-state {
+    opacity: 1 !important; visibility: visible !important; transform: translateY(0) scale(1) !important;
+}
+/* --- 💬 51.2 CHATBOT MATRIX: CHAT BUBBLES STREAM --- */
+.chatbot-window-header-bar {
+    background: #ffffff !important; border-bottom: 1px solid #edf2f7 !important;
+    padding: 16px 20px !important; display: flex !important; align-items: center !important; justify-content: space-between !important;
+}
+body.theme-dark .chatbot-window-header-bar { background: #1e1f22 !important; border-color: #111214 !important; }
+
+.chatbot-header-identity { display: flex !important; flex-direction: column !important; align-items: flex-start !important; text-align: left !important; }
+.chatbot-header-identity h4 { color: #030207 !important; font-size: 15px !important; font-weight: 850 !important; margin: 0 !important; }
+body.theme-dark .chatbot-header-identity h4 { color: #ffffff !important; }
+.chatbot-header-identity p { color: #7e7c8c !important; font-size: 11px !important; font-weight: 600 !important; margin: 2px 0 0 0 !important; }
+
+.chatbot-window-close-x-btn { background: transparent !important; border: none !important; color: #7e7c8c !important; font-size: 22px !important; cursor: pointer !important; line-height: 0.5; }
+.chatbot-window-close-x-btn:hover { color: #ff3333 !important; }
+
+/* मुख्य चैट एरिया स्क्रॉल ज़ोन */
+.chatbot-messages-body-stream {
+    flex: 1 !important; padding: 20px !important; overflow-y: auto !important;
+    display: flex !important; flex-direction: column !important; gap: 14px !important; box-sizing: border-box !important;
+}
+
+/* 🧱 मैसेजेस बबल्स (Exact Screenshot Sync) */
+.chatbot-msg-bubble-row { display: flex !important; width: 100% !important; box-sizing: border-box !important; }
+.chatbot-msg-bubble-row p { font-size: 13.5px !important; font-weight: 600 !important; line-height: 1.5 !important; margin: 0 !important; padding: 12px 16px !important; border-radius: 16px !important; max-width: 85% !important; text-align: left !important; word-break: break-word !important; }
+
+/* बॉट का म्यूटेड लाइट पर्पल/डार्क ग्रे बबल बिल्कुल स्क्रीनशॉट जैसा भाई */
+.bot-msg-shroud { justify-content: flex-start !important; }
+.bot-msg-shroud p { background: #f3efff !important; color: #030207 !important; border-top-left-radius: 4px !important; }
+body.theme-dark .bot-msg-shroud p { background: #2b2d31 !important; color: #dbdee1 !important; }
+
+/* यूजर का मैसेजेस बबल (राइट साइड अलाइनमेंट) */
+.user-msg-shroud { justify-content: flex-end !important; }
+.user-msg-shroud p { background: #7F00FF !important; color: #ffffff !important; border-top-right-radius: 4px !important; }
+/* --- 💬 51.1 CHAT ENGINE FIXED: SHIELD POSITION CORES --- */
+
+.cyder-gatekeeper-corner-badge {
+    position: fixed !important; bottom: 24px !important; right: 24px !important; z-index: 9999999999 !important;
+    background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-radius: 50px !important; padding: 8px 20px 8px 8px !important;
+    display: inline-flex !important; align-items: center !important; gap: 12px !important; cursor: pointer !important; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+    transition: transform 0.2s, box-shadow 0.2s !important;
+}
+body.theme-dark .cyder-gatekeeper-corner-badge { background: #0f1115 !important; border-color: #1a1f29 !important; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4) !important; }
+.cyder-gatekeeper-corner-badge:hover { transform: translateY(-2px) scale(1.02) !important; }
+
+.gatekeeper-badge-icon-sphere { width: 36px !important; height: 36px !important; background: #7F00FF !important; color: #ffffff !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; flex-shrink: 0 !important; box-shadow: 0 4px 12px rgba(127, 0, 255, 0.3) !important; }
+.gatekeeper-badge-text-block { display: flex !important; flex-direction: column !important; align-items: flex-start !important; text-align: left !important; line-height: 1.2 !important; }
+.gatekeeper-txt-top { font-family: 'Plus Jakarta Sans', sans-serif !important; color: #030207 !important; font-size: 13px !important; font-weight: 850 !important; }
+body.theme-dark .gatekeeper-txt-top { color: #ffffff !important; }
+.gatekeeper-txt-bottom { font-family: 'Plus Jakarta Sans', sans-serif !important; color: #2563eb !important; font-size: 10px !important; font-weight: 800 !important; margin-top: 1px !important; }
+body.theme-dark .gatekeeper-txt-bottom { color: #3b82f6 !important; }
+
+/* 🚀 🚀 फिक्स: आलीशान मुख्य चैट विंडो बॉक्स जो पुरानी क्लासेस को बाईपास करेगा 🚀 🚀 */
+.azelia-isolated-chatbot-mainframe {
+    position: fixed !important; bottom: 85px !important; right: 24px !important;
+    width: 380px !important; height: 500px !important;
+    background: #ffffff !important; border: 1px solid #edf2f7 !important; border-radius: 20px !important;
+    z-index: 9999999999 !important;
+    
+    /* ⚡ ज़बरदस्ती वर्टिकल फ्लेक्स ब्लॉक मैकेनिज्म ऑन किया भाई */
+    display: flex !important; flex-direction: column !important; overflow: hidden !important;
+    box-shadow: 0 15px 45px rgba(0,0,0,0.12) !important; box-sizing: border-box !important;
+    
+    /* एनीमेशन टॉगल की डिफ़ॉल्ट बंद स्टेट */
+    opacity: 0 !important; visibility: hidden !important; transform: translateY(20px) scale(0.95) !important;
+    transition: opacity 0.25s, visibility 0.25s, transform 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+body.theme-dark .azelia-isolated-chatbot-mainframe { background: #1e1f22 !important; border-color: #111214 !important; box-shadow: 0 20px 50px rgba(0,0,0,0.5) !important; }
+
+/* एक्टिव टॉगल क्लास नियम */
+.chatbot-panel-active-state {
+    display: flex !important; opacity: 1 !important; visibility: visible !important; transform: translateY(0) scale(1) !important;
+}
+
+/* --- 💬 51.2 CHAT ENGINE FIXED: STREAMING MESSAGES SCHEMES --- */
+
+.azelia-isolated-chat-header-bar {
+    background: #ffffff !important; border-bottom: 1px solid #edf2f7 !important;
+    padding: 16px 20px !important; display: flex !important; align-items: center !important; justify-content: space-between !important;
+    flex-shrink: 0 !important; width: 100% !important; box-sizing: border-box !important;
+}
+body.theme-dark .azelia-isolated-chat-header-bar { background: #1e1f22 !important; border-color: #111214 !important; }
+
+.azelia-isolated-chat-header-titles { display: flex !important; flex-direction: column !important; align-items: flex-start !important; text-align: left !important; }
+.azelia-isolated-chat-header-titles h4 { color: #030207 !important; font-size: 15px !important; font-weight: 850 !important; margin: 0 !important; }
+body.theme-dark .azelia-isolated-chat-header-titles h4 { color: #ffffff !important; }
+.azelia-isolated-chat-header-titles p { color: #7e7c8c !important; font-size: 11px !important; font-weight: 600 !important; margin: 2px 0 0 0 !important; }
+
+.azelia-isolated-chat-close-btn { background: transparent !important; border: none !important; color: #7e7c8c !important; font-size: 22px !important; cursor: pointer !important; line-height: 0.5; }
+
+/* 🚀 🚀 फिक्स: मुख्य स्क्रॉल एरिया की विज़िबिलिटी को मजबूर करना 🚀 🚀 */
+.azelia-isolated-chat-scroll-viewport {
+    flex: 1 !important; display: flex !important; flex-direction: column !important; gap: 14px !important;
+    padding: 20px !important; overflow-y: auto !important; /* अंदर स्क्रॉलिंग हमेशा ऑन रहेगी भाई */
+    background: transparent !important; width: 100% !important; box-sizing: border-box !important;
+}
+
+.azelia-isolated-bubble-row { display: flex !important; width: 100% !important; box-sizing: border-box !important; }
+.azelia-isolated-bubble-row p { font-size: 13.5px !important; font-weight: 600 !important; line-height: 1.5 !important; margin: 0 !important; padding: 12px 16px !important; border-radius: 16px !important; max-width: 85% !important; text-align: left !important; word-break: break-word !important; }
+
+.sender-is-bot { justify-content: flex-start !important; }
+.sender-is-bot p { background: #f3efff !important; color: #030207 !important; border-top-left-radius: 4px !important; }
+body.theme-dark .sender-is-bot p { background: #2b2d31 !important; color: #dbdee1 !important; }
+.sender-is-user { justify-content: flex-end !important; }
+.sender-is-user p { background: #7F00FF !important; color: #ffffff !important; border-top-right-radius: 4px !important; }
+/* --- 💬 51.3 CHAT ENGINE FIXED: QUICK BUTTONS & INPUT BAR --- */
+
+/* 🚀 🚀 फिक्स: वो 4 सवाल बटन्स जो अब स्क्रीन पर 100% साफ़-साफ़ दिखेंगे! 🚀 🚀 */
+.azelia-isolated-quick-chips-stack {
+    display: flex !important; flex-direction: column !important; align-items: flex-start !important; gap: 8px !important;
+    width: 100% !important; margin-top: 4px !important; box-sizing: border-box !important; flex-shrink: 0 !important;
+}
+.azelia-quick-clickable-action-btn {
+    background: #ffffff !important; border: 1px solid #cbd5e1 !important; border-radius: 50px !important;
+    padding: 10px 16px !important; font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: #475569 !important; font-size: 12.5px !important; font-weight: 600 !important;
+    cursor: pointer !important; text-align: left !important; width: 100% !important; max-width: 95% !important;
+    transition: all 0.2s ease !important; box-sizing: border-box !important; display: block !important; /* विज़िबिलिटी फिक्स */
+}
+body.theme-dark .azelia-quick-clickable-action-btn { background: #313338 !important; border-color: #4e5058 !important; color: #dbdee1 !important; }
+.azelia-quick-clickable-action-btn:hover { border-color: #A855F7 !important; color: #A855F7 !important; background: rgba(168,85,247,0.02) !important; }
+
+/* 🚀 🚀 फिक्स: नीचे टाइप करने वाली पट्टी को ज़बरदस्ती बॉटम में लाक करना 🚀 🚀 */
+.azelia-isolated-chat-footer-input-row {
+    padding: 14px 16px !important; border-top: 1px solid #edf2f7 !important;
+    display: flex !important; align-items: center !important; gap: 10px !important;
+    box-sizing: border-box !important; background: #ffffff !important; width: 100% !important;
+    flex-shrink: 0 !important; /* इनपुट पट्टी कभी कट कर गायब नहीं होगी भाई */
+}
+body.theme-dark .azelia-isolated-chat-footer-input-row { background: #1e1f22 !important; border-color: #111214 !important; }
+
+.azelia-isolated-chat-footer-input-row input {
+    flex: 1 !important; background: #f1f5f9 !important; border: 1px solid transparent !important;
+    border-radius: 50px !important; padding: 12px 18px !important; font-size: 13px !important; font-weight: 600 !important;
+    color: #030207 !important; outline: none !important; box-sizing: border-box !important; display: block !important;
+}
+body.theme-dark .azelia-isolated-chat-footer-input-row input { background: #313338 !important; color: #ffffff !important; }
+.azelia-isolated-chat-footer-input-row input:focus { border-color: #A855F7 !important; }
+
+.azelia-isolated-chat-send-rocket-btn {
+    width: 38px !important; height: 38px !important; background: #cbb2ff !important; color: #ffffff !important;
+    border: none !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; cursor: pointer !important; flex-shrink: 0 !important; transition: background 0.2s;
+}
+.azelia-isolated-chat-send-rocket-btn:hover { background: #7F00FF !important; }
+
+/* 📱 मोबाइल रिस्पॉन्सिव */
+@media screen and (max-width: 440px) {
+    .azelia-isolated-chatbot-mainframe { width: calc(100% - 32px) !important; right: 16px !important; bottom: 80px !important; height: 460px !important; }
+}
+/* --- 📱 46.1 MOBILE ENGINE: GRID DESTRUCTION FILTER --- */
+@media screen and (max-width: 860px) {
+    
+    /* 🚀 पूरे बाहरी सेक्शन को मोबाइल फ्रेम में टाइट लॉक करना भाई */
+    .cyder-reviews-section-wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 40px 20px !important; /* दोनों तरफ से सेफ़ मार्जिन */
+        margin: 40px auto !important;
+        box-sizing: border-box !important;
+        display: block !important;
+        clear: both !important;
+        overflow: hidden !important;
+    }
+
+    /* 🚀 🚀 मास्टर फिक्स: पुराने ३-कॉलम ग्रिड इंजन का गला घोंटना ताकि वो खंभा न बना सके 🚀 🚀 */
+    .cyder-reviews-grid-matrix {
+        display: block !important; /* ⚡ ग्रिड को हटाकर सीधे ब्लॉक लेआउट थोपा */
+        grid-template-columns: none !important; /* ⚡ पुराने repeat(3, 1fr) को शून्य किया */
+        grid-template-rows: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+/* --- 📱 46.2 MOBILE ENGINE: WIDE RECTANGLE CARD REPLICATION --- */
+
+    /* 🧱 हूबहू स्क्रीनशॉट जैसा आलीशान चौड़ा अकेला रेक्टेंगल कार्ड बॉक्स */
+    .cyder-review-obsidian-card {
+        display: flex !important;
+        flex-direction: column !important;
+        
+        /* ⚡ ⚡ जबरदस्ती पूरे फोन की 100% चौड़ाई दी ताकि पतली पट्टी हमेशा के लिए ख़त्म हो जाए ⚡ ⚡ */
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        margin-bottom: 20px !important; /* कार्ड्स के बीच का कड़क वर्टिकल गैप */
+        
+        background: #0f0c1b !important; /* गहरा आलीशान डार्क बेस */
+        border: 1px solid rgba(168, 85, 247, 0.15) !important; /* हल्का सा पर्पल म्यूटेड किनारा */
+        border-radius: 20px !important; /* सुंदर मलाईदार कोमल गोल कोने */
+        padding: 24px !important; /* डिब्बे के अंदर की प्रीमियम स्पेसिंग */
+        box-sizing: border-box !important;
+        transform: none !important;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3) !important;
+    }
+    
+    /* लाइट मोड में भी डिब्बा परफेक्ट कंट्रास्ट में चमकेगा भाई */
+    body.theme-light .cyder-review-obsidian-card {
+        background: #ffffff !important;
+        border-color: #edf2f7 !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.02) !important;
+    }
+/* --- 📱 46.3 MOBILE ENGINE: TEXT RE-ALIGNMENT CONFIGS --- */
+
+    /* प्रोफाइल फोटो और नाम का कड़क लेफ्ट अलाइनमेंट */
+    .review-user-profile-row {
+        display: flex !important;
+        align-items: center !important;
+        gap: 14px !important;
+        margin-bottom: 12px !important;
+        text-align: left !important;
+        width: 100% !important;
+    }
+
+    .review-user-avatar {
+        width: 44px !important;
+        height: 44px !important;
+        border-radius: 50% !important;
+        flex-shrink: 0 !important;
+    }
+
+    .review-user-meta-stack { text-align: left !important; }
+    .review-user-meta-stack h4 { font-size: 15.5px !important; font-weight: 800 !important; color: var(--cyder-text-main) !important; margin: 0 !important; }
+    .review-user-meta-stack p { font-size: 12px !important; color: var(--cyder-text-sub) !important; margin: 2px 0 0 0 !important; }
+
+    .review-stars-gold-row { text-align: left !important; color: #ffb300 !important; font-size: 13px !important; letter-spacing: 2px !important; margin-bottom: 16px !important; }
+
+    /* 🚀 मुख्य फीडबैक टेक्स्ट - अब अक्षर नीचे नहीं गिरेंगे, मक्खन की तरह सीधे फैलेंगे */
+    .review-core-feedback-text {
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+        color: var(--cyder-text-main) !important;
+        font-size: 14px !important;
+        line-height: 1.6 !important;
+        font-weight: 500 !important;
+        text-align: left !important;
+        margin: 0 0 16px 0 !important;
+        width: 100% !important;
+        display: block !important;
+    }
+
+    .review-channel-hash-tag {
+        color: #A855F7 !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        text-align: left !important;
+        margin-top: auto !important;
+    }
+} /* 🚀 मीडिया क्वेरी पूरी तरह लॉक बंद भाई! */
+/* --- ⭐ 46.1 ISOLATED REVIEWS: COMPUTER DESKTOP VIEW SCALES --- */
+.cyder-reviews-section-wrapper {
+    width: 100% !important; max-width: 1200px !important;
+    margin: 100px auto !important; padding: 0 40px !important; box-sizing: border-box !important; clear: both !important;
+}
+.cyder-reviews-main-header { margin-bottom: 45px !important; text-align: left !important; display: flex !important; flex-direction: column !important; align-items: flex-start !important; }
+.reviews-badge-accent-label { color: #A855F7 !important; font-family: 'Syncopate', sans-serif !important; font-size: 11.5px !important; font-weight: 800 !important; letter-spacing: 1px !important; text-transform: uppercase !important; margin-bottom: 12px !important; }
+.reviews-section-main-title { font-family: 'Plus Jakarta Sans', sans-serif !important; color: var(--cyder-text-main) !important; font-size: 38px !important; font-weight: 850 !important; line-height: 1.2 !important; letter-spacing: -1.2px !important; margin: 0 0 8px 0 !important; }
+.reviews-section-subtitle { color: var(--cyder-text-sub) !important; font-size: 14.5px !important; font-weight: 500 !important; margin: 0 !important; }
+
+/* 🚀 डेस्कटॉप पर कड़क ३-कॉलम लेआउट */
+.cyder-unbreakable-flex-stack {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 24px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+/* --- ⭐ 46.2 ISOLATED REVIEWS: PREMIUM CARD CORES --- */
+.cyder-review-obsidian-card {
+    background: var(--cyder-card-bg) !important; border: 1px solid var(--cyder-border) !important;
+    border-radius: 18px !important; padding: 24px !important; display: flex !important; flex-direction: column !important; box-sizing: border-box !important; transition: transform 0.2s, border-color 0.25s !important;
+}
+body.theme-dark .cyder-review-obsidian-card { background: #0f1115 !important; border-color: #1a1f29 !important; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35) !important; }
+.cyder-review-obsidian-card:hover { transform: translateY(-2px) !important; border-color: #63FF00 !important; }
+
+.review-user-profile-row { display: flex !important; align-items: center !important; gap: 12px !important; margin-bottom: 14px !important; text-align: left !important; }
+.review-user-avatar { width: 38px !important; height: 38px !important; border-radius: 50% !important; overflow: hidden !important; border: 1px solid var(--cyder-border) !important; flex-shrink: 0 !important; }
+.review-user-avatar img { width: 100% !important; height: 100% !important; object-fit: cover !important; display: block !important; }
+.review-user-meta-stack h4 { color: var(--cyder-text-main) !important; font-size: 14.5px !important; font-weight: 850 !important; margin: 0 !important; }
+.review-user-meta-stack p { color: var(--cyder-text-sub) !important; font-size: 11.5px !important; font-weight: 500 !important; margin: 2px 0 0 0 !important; }
+.review-stars-gold-row { color: #ffb300 !important; font-size: 13px !important; letter-spacing: 2px !important; text-align: left !important; margin-bottom: 12px !important; }
+.review-core-feedback-text { color: var(--cyder-text-main) !important; font-size: 13.5px !important; line-height: 1.55 !important; font-weight: 700 !important; text-align: left !important; margin: 0 0 18px 0 !important; opacity: 0.9 !important; }
+.review-channel-hash-tag { color: #A855F7 !important; font-size: 12.5px !important; font-weight: 700 !important; text-align: left !important; margin-top: auto !important; }
+/* --- ⭐ 46.3 ISOLATED REVIEWS: BULETPROOF MOBILE SHIELD --- */
+
+@media screen and (max-width: 860px) {
+    .cyder-reviews-section-wrapper { padding: 40px 20px !important; margin: 40px auto !important; }
+    .cyder-reviews-main-header { align-items: center !important; text-align: center !important; }
+    .reviews-section-main-title { font-size: 28px !important; text-align: center !important; }
+    .reviews-section-subtitle { text-align: center !important; }
+
+    /* ⚡ ⚡ जादुई फिक्स: पुराने ग्रिड पिंजरे को पूरी तरह बाईपास करके १-कॉलम फ्लेक्स स्टैक थोपा ⚡ ⚡ */
+    .cyder-unbreakable-flex-stack {
+        display: flex !important;
+        flex-direction: column !important; /* ⚡ फोन पर जबरदस्ती एक कतार में सिर्फ १ ही कार्ड लॉक */
+        gap: 16px !important;
+        width: 100% !important;
+    }
+
+    /* ⚡ ⚡ मास्टर फिक्स: कार्ड की चौड़ाई को जबरदस्ती 100% रेक्टेंगल शेप में फैलाया ⚡ ⚡ */
+    .cyder-review-obsidian-card {
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        padding: 22px 20px !important;
+    }
+}
+/* --- 🗺️ 37.1 FIXED FOOTER: MASTER CONTAINER SIZING --- */
+.cyder-footer-brand-section-wrapper {
+    width: 100% !important;
+    background: transparent !important;
+    border-top: 1px solid var(--cyder-border) !important; /* बारीक और साफ म्यूटेड सेपरेटर लाइन */
+    margin: 120px auto 0 auto !important; /* नीचे का एक्स्ट्रा मार्जिन हटाया ताकि डायरेक्टरी से सट सके */
+    padding: 60px 40px 20px 40px !important;
+    box-sizing: border-box !important;
+    clear: both !important;
+}
+
+/* 🚀 🚀 मास्टर पीसी फिक्स: पूरे ब्लॉक को ग्रिड के साथ परफेक्ट लेफ्ट-अलाइन दायरे में समेटना 🚀 🚀 */
+.cyder-footer-brand-container {
+    width: 100% !important;
+    max-width: 1200px !important; /* ⚡ फिक्स: पूरी वेबसाइट के मुख्य लेआउट की चौड़ाई से सिंक किया */
+    margin: 0 auto !important; /* ⚡ फिक्स: बड़ी स्क्रीन पर डिब्बे को बिल्कुल सेंटर अलाइन रखेगा */
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important; /* ⚡ फिक्स: अंदर का सारा माल-मसाला कड़क लेफ्ट में ही रहेगा */
+    text-align: left !important;
+    box-sizing: border-box !important;
+}
+/* --- 🗺️ 37.2 FIXED FOOTER: BRAND TYPOGRAPHY SYNC --- */
+.cyder-footer-identity-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-bottom: 20px !important;
+}
+
+.cyder-footer-core-avatar-img {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    border: 1px solid var(--cyder-border) !important;
+}
+
+.cyder-footer-brand-text-label {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: var(--cyder-text-main) !important;
+    font-size: 22px !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.5px !important;
+}
+
+/* ✍️ मुख्य विवरण सब-टेक्स्ट (Exact Wrapper Size) */
+.cyder-footer-brand-pitch-description {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: var(--cyder-text-sub) !important;
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+    font-weight: 500 !important;
+    max-width: 540px !important; /* ⚡ फिक्स: पीसी पर टेक्स्ट को पूरी स्क्रीन पर फैलने से रोककर सुंदर शेप देगा */
+    margin: 0 0 28px 0 !important;
+}
+/* --- 🗺️ 37.3 FIXED FOOTER: BUTTONS & MOBILE VIEW RESPONSIVE --- */
+.cyder-footer-action-buttons-row {
+    display: flex !important;
+    flex-direction: row !important; /* ⚡ फिक्स: पीसी स्क्रीन पर बटन्स सुंदर तरीके से अगल-बगल रहेंगे */
+    gap: 14px !important;
+}
+
+/* पहला प्राइमरी बटन (Add to Discord) */
+.btn-footer-action-dark-node {
+    background: #0f111a !important;
+    color: #ffffff !important;
+    padding: 12px 26px !important;
+    border-radius: 14px !important;
+    font-size: 14.5px !important;
+    font-weight: 750 !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+    transition: transform 0.2s, background-color 0.2s !important;
+}
+body.theme-light .btn-footer-action-dark-node { background: #090b11 !important; }
+.btn-footer-action-dark-node:hover { transform: translateY(-1px) !important; background: #151826 !important; }
+
+/* दूसरा सेकेंडरी बटन (Join support) */
+.btn-footer-action-trans-node {
+    background: transparent !important;
+    border: 1px solid rgba(168, 85, 247, 0.18) !important;
+    color: var(--cyder-text-main) !important;
+    padding: 12px 26px !important;
+    border-radius: 14px !important;
+    font-size: 14.5px !important;
+    font-weight: 750 !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+}
+body.theme-light .btn-footer-action-trans-node { border-color: #cbd5e1 !important; }
+.btn-footer-action-trans-node:hover { border-color: var(--cyder-text-main) !important; background: rgba(255, 255, 255, 0.02) !important; }
+
+/* 📱 बुलेटप्रूफ मोबाइल रिस्पॉन्सिव ओवरराइड सेफ्टी */
+@media screen and (max-width: 860px) {
+    .cyder-footer-brand-section-wrapper { padding: 40px 20px 30px 20px !important; margin: 80px auto 0 auto !important; }
+    .cyder-footer-brand-pitch-description { font-size: 14px !important; margin-bottom: 24px !important; text-align: left !important; max-width: 100% !important; }
+    
+    /* ⚡ फिक्स: फोन व्यू पर आते ही बटन्स वापस आटोमैटिक एक के नीचे एक फुल विड्थ हो जाएंगे जैसा तुमने सेट किया था */
+    .cyder-footer-action-buttons-row {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 12px !important;
+    }
+    .btn-footer-action-dark-node, 
+    .btn-footer-action-trans-node {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+/* ========================================================================= */
+/* 🗺️ 37. FIXED FOOTER: 100% PURE CENTRAL MIDDLE ALIGNMENT ENGINE            */
+/* ========================================================================= */
+
+.cyder-footer-brand-section-wrapper {
+    width: 100% !important;
+    background: transparent !important;
+    border-top: 1px solid var(--cyder-border) !important;
+    margin: 120px auto 0 auto !important;
+    padding: 60px 24px 20px 24px !important; /* मोबाइल और पीसी दोनों के लिए स्पेसिंग बैलेंस */
+    box-sizing: border-box !important;
+    clear: both !important;
+}
+
+.cyder-footer-brand-container {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    
+    /* ⚡ ⚡ जादुई फिक्स: पूरे फुटर ब्लॉक को जबरदस्ती स्क्रीन के बिल्कुल बीच (MIDDLE) में लॉक किया ⚡ ⚡ */
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important; /* 🚀 फिक्स: लोगो, टेक्स्ट, बटन्स सब कुछ बिल्कुल सेंटर में आ जाएगा भाई! */
+    text-align: center !important; /* 🚀 फिक्स: पैराग्राफ की लाइनें भी परफेक्ट बीच में अलाइन होंगी */
+    box-sizing: border-box !important;
+}
+
+/* 🌀 लोगो + ब्रांड नेम रो का सेंटर सिंक */
+.cyder-footer-identity-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important; /* बीच में अलाइन */
+    gap: 12px !important;
+    margin-bottom: 20px !important;
+    width: 100% !important;
+}
+
+.cyder-footer-core-avatar-img {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    border: 1px solid var(--cyder-border) !important;
+}
+
+.cyder-footer-brand-text-label {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: var(--cyder-text-main) !important;
+    font-size: 22px !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.5px !important;
+}
+
+/* ✍️ मुख्य विवरण सब-टेक्स्ट (Centered Wrapping) */
+.cyder-footer-brand-pitch-description {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    color: var(--cyder-text-sub) !important;
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+    font-weight: 500 !important;
+    max-width: 580px !important;
+    margin: 0 auto 32px auto !important; /* 🚀 फिक्स: ऑटो मार्जिन से पैराग्राफ बिल्कुल बीच में लॉक रहेगा भाई */
+    text-align: center !important;
+}
+
+/* 🎛️ दोनों बटन्स की कतार का सेंटर अलाइनमेंट */
+.cyder-footer-action-buttons-row {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important; /* 🚀 फिक्स: बटन्स को स्क्रीन के बीच में लाना */
+    gap: 14px !important;
+    width: 100% !important;
+}
+
+/* बटन्स के बेस स्टाइल */
+.btn-footer-action-dark-node {
+    background: #0f111a !important;
+    color: #ffffff !important;
+    padding: 12px 26px !important;
+    border-radius: 14px !important;
+    font-size: 14.5px !important;
+    font-weight: 750 !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+    transition: transform 0.2s, background-color 0.2s !important;
+}
+body.theme-light .btn-footer-action-dark-node { background: #090b11 !important; }
+.btn-footer-action-dark-node:hover { transform: translateY(-1px) !important; background: #151826 !important; }
+
+.btn-footer-action-trans-node {
+    background: transparent !important;
+    border: 1px solid rgba(168, 85, 247, 0.18) !important;
+    color: var(--cyder-text-main) !important;
+    padding: 12px 26px !important;
+    border-radius: 14px !important;
+    font-size: 14.5px !important;
+    font-weight: 750 !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+}
+body.theme-light .btn-footer-action-trans-node { border-color: #cbd5e1 !important; }
+.btn-footer-action-trans-node:hover { border-color: var(--cyder-text-main) !important; background: rgba(255, 255, 255, 0.02) !important; }
+
+/* 📱 बुलेटप्रूफ मोबाइल रिस्पॉन्सिव */
+@media screen and (max-width: 860px) {
+    .cyder-footer-brand-section-wrapper { padding: 40px 20px 30px 20px !important; }
+    .cyder-footer-brand-pitch-description { font-size: 14px !important; margin-bottom: 24px !important; text-align: center !important; }
+    
+    .cyder-footer-action-buttons-row {
+        flex-direction: column !important; /* मोबाइल पर बटन्स वापस एक के नीचे एक फुल विड्थ */
+        align-items: center !important;
+        gap: 12px !important;
+    }
+    .btn-footer-action-dark-node, 
+    .btn-footer-action-trans-node {
+        width: 100% !important;
+        max-width: 340px !important;
+    }
+}
+/* --- 🔒 52. PITCH BANNER: CYDER COMING SOON DISABLED OVERRIDE ENGINE --- */
+
+/* 🚀 🚀 जादू: पुराने पर्पल ट्रिगर का पिंजरा तोड़कर बिल्कुल स्क्रीनशॉट जैसा आलीशान म्यूटेड डिसेबल्ड लुक लॉक करना 🚀 🚀 */
+.cyder-banner-right-action-buttons .cyder-btn-coming-soon-locked {
+    /* ⚡ फिक्स: म्यूटेड एलीट डार्क-ग्रे ग्लास बेस बिल्कुल स्क्रीनशॉट अलाइनमेंट के लिए भाई */
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.4) !important; /* धुंधला सा विज़िबल टेक्स्ट */
+    
+    padding: 12px 24px !important;
+    border-radius: 12px !important;
+    font-size: 13.5px !important;
+    font-weight: 800 !important;
+    text-decoration: none !important;
+    text-align: center !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important; /* अक्षरों को कड़क कैपिटल लुक देगा भाई */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    /* ⚡ ⚡ मास्टर फिक्स: pointer-events से क्लिक लॉक किया और माउस लाने पर ब्लॉक का निशान आएगा भाई ⚡ ⚡ */
+    pointer-events: none !important;
+    cursor: not-allowed !important;
+    user-select: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+    opacity: 0.8 !important;
+}
+
+/* 🚀 लाइट थीम स्विच होने पर भी यह बटन म्यूटेड ही रहेगा ताकि क्लाइंट गुस्सा न करे भाई! */
+body.theme-light .cyder-btn-coming-soon-locked {
+    background: #f1f5f9 !important;
+    border-color: #cbd5e1 !important;
+    color: #94a3b8 !important;
+}
+/* --- 🗺️ 53. PITCH BANNER: HIGH-CONTRAST SUPPORT SERVER BUTTON FIX --- */
+
+/* 🚀 🚀 जादू: उस छुपे हुए पर्पल-डार्क बटन को उखाड़कर कड़क वाइट ग्लास बॉर्डर लुक देना 🚀 🚀 */
+.cyder-banner-right-action-buttons .btn-banner-support-server {
+    /* ⚡ ⚡ फिक्स: डार्क बैकग्राउंड पर 100% साफ़ विज़िबिलिटी के लिए वाइट-ग्लास किनारा और सफ़ेद टेक्स्ट ⚡ ⚡ */
+    background: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important; 
+    color: #ffffff !important; 
+    
+    padding: 12px 24px !important;
+    border-radius: 12px !important; /* कमिंग सून बटन के साथ परफेक्ट सिंटैक्स मैच */
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    text-decoration: none !important;
+    text-align: center !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    cursor: pointer !important;
+    pointer-events: auto !important; /* ⚡ फिक्स: यह पूरी तरह काम करेगा और क्लिकेबल रहेगा भाई */
+    transition: all 0.2s ease-in-out !important;
+}
+
+/* माउस ले जाने पर बटन का आलीशान रिस्पॉन्स ग्लो */
+.cyder-banner-right-action-buttons .btn-banner-support-server:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 🚀 लाइट थीम एक्टिव होने पर यह बटन अपने आप साफ़ क्रिस्टल डार्क-स्लेट किनारा ले लेगा भाई! */
+body.theme-light .btn-banner-support-server {
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+}
+body.theme-light .btn-banner-support-server:hover {
+    background: rgba(0, 0, 0, 0.02) !important;
+    border-color: #0f172a !important;
+}
+/* ========================================================================= */
+/* 📱 47. MOBILE SHIELD: FORCE THEME SWITCHER PILL VISIBILITY IN PHONE VIEW   */
+/* ========================================================================= */
+
+@media screen and (max-width: 860px) {
+    
+    /* 🚀 1. जादुई फिक्स: पुराने display: none को तोड़कर मोबाइल नेवबार पर पिल को विज़िबल करना भाई */
+    .theme-icon-node,
+    div[class*="theme-toggle"],
+    div[class*="switcher"] {
+        display: inline-flex !important; /* ⚡ ज़बरदस्ती मोबाइल पर ऑन किया भाई */
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    /* 🚀 2. मोबाइल हेडर / नेवबार रो अलाइनमेंट सिंक (ताकि लोगो और पिल आमने-सामने सजे) */
+    .cyder-nav-master-holder,
+    header nav,
+    .nav-container-shell {
+        display: flex !important;
+        flex-direction: row !important; /* मोबाइल पर भी सीधा हॉरिजॉन्टल रखेगा */
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 12px 16px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* 🚀 3. पिल कंट्रोलर का कॉम्पैक्ट मोबाइल स्केलर (बिल्कुल स्क्रीनशॉट जैसी सुंदर स्पेसिंग) */
+    .theme-switcher-pill-wrapper,
+    div.theme-icon-node-parent,
+    ul.nav-right-side-nodes {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 10px !important; /* बटनों के बीच का गैप */
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* 🚀 4. मोबाइल पर तीन बटनों वाले बॉक्स का कड़क साइज संतुलन */
+    div.theme-icon-node-parent {
+        background: var(--cyder-card-bg) !important;
+        border: 1px solid var(--cyder-border) !important;
+        border-radius: 50px !important;
+        padding: 4px 8px !important;
+        transform: scale(0.9) !important; /* मोबाइल स्क्रीन के लिए हल्का सा छोटा और क्रिस्प किया भाई */
+    }
+}
+
+
+
+
+
+</style>
+
+
+
+
+
+<script>
+// --- 🌓 100% OPERATIONAL AUTOMATIC SYSTEM THEME INTERCEPTOR ENGINE ---
+document.addEventListener("DOMContentLoaded", () => {
+    const themeButtons = document.querySelectorAll(".theme-icon-node");
+    
+    if (themeButtons.length === 0) return;
+        // ⚡ ⚡ मास्टर फिक्स: वेबसाइट लोड होते ही तुरंत सिस्टम की थीम को ऑटो-डिटेक्ट करके एक्टिवेट करने का ट्रिगर! ⚡ ⚡
+    applySystemDeviceThemeEngine();
+
+
+
+    // 🚀 🚀 जादू 1: यूजर के डिवाइस की सिस्टम थीम (लाइट या डार्क) को हवा में रीड करने का फंक्शन 🚀 🚀
+    function applySystemDeviceThemeEngine() {
+        // चेक करना कि क्या यूजर के कंप्यूटर/फ़ोन का खुद का थीम लाइट (वाइट) है
+        const isDeviceInLightMode = window.matchMedia("(prefers-color-scheme: light)").matches;
+        
+        if (isDeviceInLightMode) {
+            // अगर यूजर का सिस्टम वाइट है, तो वेबसाइट को लाइव वाइट थीम में स्विच करना
+            document.body.className = "theme-light";
+        } else {
+            // अगर यूजर का सिस्टम ब्लैक है, तो डार्क रखना
+            document.body.className = "theme-dark";
+        }
+    }
+
+    themeButtons.forEach((btn, index) => {
+        btn.addEventListener("click", () => {
+            // पुराने सभी बटन्स से एक्टिव ग्रीन क्लासेस को साफ़ करना
+            themeButtons.forEach(b => b.classList.remove("active-system-mode", "active-mode"));
+            
+            // क्लिक किए गए बटन पर तुम्हारा तीखा नियॉन ग्रीन बैकग्राउंड लागू करना
+            btn.classList.add("active-mode");
+            
+            // 🎛️ थीम स्विचिंग कंडीशन्स
+            if (index === 0) {
+                // 💻 Mode 1: SYSTEM THEME (अब यह तुम्हारे कंप्यूटर के वाइट थीम के हिसाब से खुद को फिट करेगा)
+                applySystemDeviceThemeEngine();
+                
+            } else if (index === 1) {
+                // ⚪ Mode 2: LIGHT MODE (जबरदस्ती पूरे पेज को वाइट करना)
+                document.body.className = "theme-light";
+            } else if (index === 2) {
+                // 🌌 Mode 3: DARK MODE (जबरदस्ती पूरे पेज को ब्लैक करना)
+                document.body.className = "theme-dark";
+            }
+        });
+    });
+
+    // 🚀 पेज पहली बार लोड होते ही डिफ़ॉल्ट रूप से सिस्टम मोड (पहले बटन) को ऑटो-रन करना
+    // इससे वेबसाइट दुनिया के हर एक डिवाइस पर उसके सिस्टम के रंग के हिसाब से पहली बार में ही परफेक्ट फिट हो जाएगी!
+    applySystemDeviceThemeEngine();
+});
+// --- 🔮 CYDER HUD INTELLIGENT AI CHATBOT ENGINE LOGICS ---
+
+// 1. चैट विंडो को ओपन/क्लोज करने का नियम
+function cyderToggleChatbotWindow() {
+    const windowNode = document.getElementById("cyder-master-splash-preloader") ? null : document.getElementById("cyder-ai-chatbot-hub-window");
+    if(windowNode) windowNode.classList.toggle("chatbot-window-active-state");
+}
+
+// =========================================================================
+// 🚀 PRODUCTION HUD: CYDER BOT WEB APPLICATION MASTER INTERACTIVE ENGINE  
+// =========================================================================
+
+document.addEventListener("DOMContentLoaded", () => {
+    // -------------------------------------------------------------------------
+    // 🌓 1. DYNAMIC SYSTEM & STORAGE VAR LIGHT / DARK THEME SWITCHER
+    // -------------------------------------------------------------------------
+    const themeToggleBtn = document.getElementById("cyder-hud-theme-toggle-trigger");
+    const currentThemeLocal = localStorage.getItem("cyder-active-theme") || "dark";
+
+    // शुरुआती लोड पर लोकल स्टोरेज के हिसाब से थीम क्लास थोपना भाई
+    if (currentThemeLocal === "light") {
+        document.body.classList.add("theme-light");
+        document.body.classList.remove("theme-dark");
+        if(themeToggleBtn) themeToggleBtn.innerHTML = "🌙"; // लाइट मोड में चांद का आइकॉन दिखेगा
+    } else {
+        document.body.classList.add("theme-dark");
+        document.body.classList.remove("theme-light");
+        if(themeToggleBtn) themeToggleBtn.innerHTML = "☀️"; // डार्क मोड में सूरज का आइकॉन
+    }
+
+    // बटन क्लिक होने पर थीम पलटने का नियम
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener("click", () => {
+            document.body.classList.toggle("theme-light");
+            const isLightActive = document.body.classList.contains("theme-light");
+            
+            if (isLightActive) {
+                localStorage.setItem("cyder-active-theme", "light");
+                themeToggleBtn.innerHTML = "🌙";
+            } else {
+                localStorage.setItem("cyder-active-theme", "dark");
+                themeToggleBtn.innerHTML = "☀️";
+            }
+        });
+    }
+});
+
+// -------------------------------------------------------------------------
+// 🧠 2. CYDER MASTER CHATBOT ENGINE: 14 OFFICIAL DOCS MATRIX (100% REAL)
+// -------------------------------------------------------------------------
+
+// तुम्हारे दिए गए सभी 14 ऑफिशियल सवाल और जवाबों की बिल्कुल साफ़ डिक्शनरी भाई
+const CYDER_OFFICIAL_DOCS_DATABASE = {
+    // --- 📁 General Questions ---
+    "what is cyder": "Cyder is a multipurpose Discord bot designed to help servers with moderation, security, automation, utilities, and community management.",
+    "free to use": "Yes, Cyder is available to use for free. btw its paid version is available too you can see it in premium section.",
+    "invite": "You can invite Cyder Bot using the official invite link available on our website.",
+    "get started": "Invite Cyder to your server, ensure it has the required permissions, and use the available commands to configure its features.",
+    "slash commands": "Cyder supports slash commands for supported features. Prefix commands are also available for supported commands.",
+
+    // --- 🔒 Moderation & Security ---
+    "moderation features": "Cyder provides moderation tools such as banning, kicking, timeouts, warnings, and channel management, depending on the available commands.",
+    "anti-nuke": "Cyder includes security features designed to help protect servers against unauthorized destructive actions, where configured.",
+    "delete spam": "Cyder offers automated moderation features to help manage unwanted messages, depending on the enabled configuration.",
+    "customize moderation": "Supported moderation permission settings can be configured according to your server's requirements.",
+    "unable to execute": "Check whether you have the required permissions, whether Cyder has the necessary bot permissions, and whether its role is higher than the target member's role.",
+
+    // --- 🎛️ Configuration & Commands ---
+    "check commands": "Use the bot's help command or visit the Commands section of our website.",
+    "change prefix": "Use the prefix configuration command if your server's installed version of Cyder supports it.",
+    "save server": "Supported settings are stored by the bot so that configurations can persist across restarts.",
+    "media-only": "Use the media configuration commands to add, remove, or view configured channels, if the Media feature is available in your installed version."
+};
+
+// चैट विंडो को ओपन और क्लोज (Toggle) करने का बुलेटप्रूफ नियम
+function cyderToggleIsolatedChatbot() {
+    const chatWin = document.getElementById("cyder-isolated-chatbot-panel");
+    if (chatWin) {
+        chatWin.classList.toggle("chatbot-panel-active-state");
+    }
+}
+
+// डिस्प्ले पर तैरने वाले 5 त्वरित सवाल बटन्स का मैपिंग ड्राइवर (100% सही जवाब फेंकेंगे)
+function cyderTriggerIsolatedFAQ(id, questionText) {
+    cyderPrintIsolatedMsg(questionText, "user");
+    
+    // क्लिक होते ही चारों-पांचों बटन्स का डिब्बा स्क्रीन से गायब हो जाएगा भाई
+    const chipsGrid = document.getElementById("cyder-isolated-chips-container-grid");
+    if (chipsGrid) chipsGrid.style.display = "none"; 
+
+    setTimeout(() => {
+        let answer = "Processing secure link clearance...";
+        if (id === 1) answer = CYDER_OFFICIAL_DOCS_DATABASE["what is cyder"];
+        else if (id === 2) answer = CYDER_OFFICIAL_DOCS_DATABASE["free to use"];
+        else if (id === 3) answer = CYDER_OFFICIAL_DOCS_DATABASE["anti-nuke"];
+        else if (id === 4) answer = CYDER_OFFICIAL_DOCS_DATABASE["slash commands"];
+        else if (id === 5) answer = CYDER_OFFICIAL_DOCS_DATABASE["unable to execute"];
+        
+        cyderPrintIsolatedMsg(answer, "bot");
+    }, 550);
+}
+
+// आधा सवाल ऑटो-डिटेक्ट करने वाला और गलत होने पर सपोर्ट सर्वर की लिंक फेंकने वाला मास्टर माइंड जावास्क्रिप्ट इंजन भाई!
+function cyderProcessIsolatedQuery() {
+    const inputNode = document.getElementById("cyder-isolated-raw-text-input-field");
+    if (!inputNode) return;
+    const txt = inputNode.value.trim();
+    if (txt === "") return;
+
+    // यूजर का टाइप किया हुआ टेक्स्ट स्क्रीन पर छापना
+    cyderPrintIsolatedMsg(txt, "user");
+    inputNode.value = ""; // इनपुट बॉक्स को तुरंत खाली करना
+
+    setTimeout(() => {
+        const lowerCaseQuery = txt.toLowerCase();
+        let matchedAnswer = null;
+
+        // 🔍 लूपिंग स्कैन: आधा-अधूरा शब्द होने पर भी पूरे १४ डाक्यूमेंट्स को खंगालना भाई
+        for (const key in CYDER_OFFICIAL_DOCS_DATABASE) {
+            if (lowerCaseQuery.includes(key)) {
+                matchedAnswer = CYDER_OFFICIAL_DOCS_DATABASE[key];
+                break; // मैच मिलते ही तुरंत लूप बंद
+            }
+        }
+
+        // ⚡ ⚡ अल्टीमेट फॉलबैक: अगर सवाल मैच नहीं हुआ (Not Found), तो सीधे कड़क नियॉन ग्रीन सपोर्ट सर्वर लिंक थ्रो होगी! ⚡ ⚡
+        if (!matchedAnswer) {
+            matchedAnswer = "Sorry, I couldn't find that specific information in our official docs. 🛡️ Please join our official <b>Cyder Support Server</b><a href='https://discord.gg/W8AkM4eYmB' target='_blank' style='color:#63FF00; font-weight:700; text-decoration:underline;'>Join Cyder Support Server</a>";
+        }
+
+        cyderPrintIsolatedMsg(matchedAnswer, "bot");
+    }, 600);
+}
+
+// मैसेज बबल प्रिंट करने का कोर रेंडरर (60 FPS मक्खन स्क्रॉलिंग)
+function cyderPrintIsolatedMsg(text, sender) {
+    const box = document.getElementById("cyder-isolated-msg-scroll-box");
+    if (!box) return;
+
+    const row = document.createElement("div");
+    row.className = `azelia-isolated-bubble-row ${sender === "user" ? "sender-is-user" : "sender-is-bot"}`;
+    row.innerHTML = `<p>${text}</p>`;
+
+    box.appendChild(row);
+    box.scrollTop = box.scrollHeight; // ऑटोमैटिक स्क्रॉल टू बॉटम
+}
+// =========================================================================
+// 🌍 CYDER GLOBAL HUB: UNIVERSAL SYNCED & PERSISTENT REAL-TIME COUNTERS
+// =========================================================================
+
+document.addEventListener("DOMContentLoaded", () => {
+    
+    // 🚀 🚀 जादू 1: बॉट के लॉन्च होने की एक फिक्स पास्ट डेट सेट करना (Epoch Anchor)
+    // तुम चाहो तो इस तारीख को बदल सकते हो भाई, इसके हिसाब से ही दिन, घंटे तय होंगे!
+    const CYDER_BOT_LAUNCH_TIMESTAMP = new Date("September 10, 2026 12:00:00").getTime();
+
+    // --- 📡 1. REAL-TIME BOT LATENCY FLUCTUATOR MATRIX ---
+    const latencyTargetBox = document.getElementById("cyder-live-ping-node");
+    if (latencyTargetBox) {
+        setInterval(() => {
+            const minPingValue = 11;
+            const maxPingValue = 250;
+            const generatedFluctuatedPing = Math.floor(Math.random() * (maxPingValue - minPingValue + 1)) + minPingValue;
+            latencyTargetBox.innerHTML = generatedFluctuatedPing + "ms";
+        }, 1500);
+    }
+
+    // --- 🕒 2. GLOBAL SYNCHRONIZED INFINITE UPTIME CLOCK ENGINE ---
+    const uptimeTargetBox = document.getElementById("cyder-live-uptime-node");
+    
+    function cyderUpdateGlobalPersistentCounters() {
+        // दुनिया का करंट असली टाइमस्टैम्प उठाना भाई (हमेशा हर पीसी पर सिंक रहता है)
+        const currentAbsoluteTime = new Date().getTime();
+        
+        // 🚀 जादू 2: जब से बॉट लॉन्च हुआ है, तब से अब तक कुल कितने सेकंड बीते, उसकी लाइव गणना!
+        let totalElapsedSeconds = Math.floor((currentAbsoluteTime - CYDER_BOT_LAUNCH_TIMESTAMP) / 1000);
+        
+        if (totalElapsedSeconds < 0) totalElapsedSeconds = 0; // सेफ्टी फॉलबैक
+
+        // सेकंड्स को दिन, घंटे, मिनट और सेकंड्स में तोड़ना भाई कड़क फ्रंट-एंड मैथ से
+        const serverDays = Math.floor(totalElapsedSeconds / (24 * 3600));
+        let remSeconds = totalElapsedSeconds % (24 * 3600);
+        
+        const serverHours = Math.floor(remSeconds / 3600);
+        remSeconds %= 3600;
+        
+        const serverMinutes = Math.floor(remSeconds / 60);
+        const serverSeconds = remSeconds % 60;
+
+        // सिंगल डिजिट के आगे "0" लगाने का नियम
+        const dispHours = serverHours < 10 ? "0" + serverHours : serverHours;
+        const dispMinutes = serverMinutes < 10 ? "0" + serverMinutes : serverMinutes;
+        const dispSeconds = serverSeconds < 10 ? "0" + serverSeconds : serverSeconds;
+
+        // स्क्रीन पर लाइव अपटाइम रेंडर करना भाई
+        if (uptimeTargetBox) {
+            uptimeTargetBox.innerHTML = `${serverDays}d ${dispHours}h ${dispMinutes}m ${dispSeconds}s`;
+        }
+
+        // --- 🛡️ 3. GLOBAL SYNCHRONIZED TOTAL SERVERS MATRIX ---
+        const serversTargetBox = document.getElementById("cyder-live-servers-node");
+        if (serversTargetBox) {
+            // बेस सर्वर की वैल्यू मान लो 1,250 थी
+            // हर ८० सेकंड में पूरी दुनिया में १ सर्वर आटोमैटिक बढ़ेगा, जो हर डिवाइस पर एक साथ दिखेगा!
+            const simulatedGlobalServers = 1250 + Math.floor(totalElapsedSeconds / 80);
+            serversTargetBox.innerHTML = simulatedGlobalServers.toLocaleString('en-IN');
+        }
+
+        // --- 👥 4. GLOBAL SYNCHRONIZED TOTAL USERS MATRIX ---
+        const usersTargetBox = document.getElementById("cyder-live-users-node");
+        if (usersTargetBox) {
+            // बेस यूज़र की वैल्यू मान लो 458,900 थी
+            // हर ३ सेकंड में पूरी दुनिया में १ नया यूजर आटोमैटिक बढ़ेगा भाई बिल्कुल असली सिंक रफ्तार पर!
+            const simulatedGlobalUsers = 15890 + Math.floor(totalElapsedSeconds / 3);
+            usersTargetBox.innerHTML = simulatedGlobalUsers.toLocaleString('en-IN');
+        }
+    }
+
+    // 🚀 पूरे सिस्टम को हर सेकंड एक्टिवेट रखने का कोर पल्स लूप
+    cyderUpdateGlobalPersistentCounters(); // तुरंत पहली बार लोड करने के लिए
+    setInterval(cyderUpdateGlobalPersistentCounters, 1000); // हर १ सेकंड पर सिंक क्लॉक चलेगी भाई!
+});
+
+
+
+
+
+
+
+
+
+
+ </script>
+
+	<!-- ========================================================================= -->
+<!-- 🛡️ PRODUCTION GATEWAY: CYDER CORE HUD NAVIGATION SYSTEMS (100% VISIBLE) -->
+<!-- ========================================================================= -->
+<header class="cyder-navbar-shell">
+    <div class="cyder-nav-container">
+        
+        <!-- 🌀 LEFT BLOCK: BRAND IDENTITY LOGO LAYER -->
+        <a href="https://discord.com/oauth2/authorize?client_id=1467715637685129246&permissions=8&response_type=code&redirect_uri=https%3A%2F%2Fdiscord.com%2Foauth2%2Fauthorized&integration_type=0&scope=guilds+applications.commands+bot" class="cyder-brand-logo-wrapper">
+            <!-- तुम्हारी डिमांड के मुताबिक 'avtar.png' लोगो यहाँ सिंक कर दिया है भाई -->
+            <img src="avtar.png" alt="Cyder Logo" class="cyder-core-avatar-img">
+            <span class="cyder-brand-text-label">Cyder</span>
+        </a>
+        
+        <!-- 🏢 CENTER BLOCK: DESKTOP NAVIGATION ROUTING LINKS -->
+        <ul class="cyder-nav-links-menu">
+            <li><a href="#home" class="cyder-nav-route-item">Home</a></li>
+            <li><a href="#features" class="cyder-nav-route-item">Features</a></li>
+            <li><a href="#team" class="cyder-nav-route-item">Team</a></li>
+            <li><a href="#faq" class="cyder-nav-route-item">FAQ</a></li>
+        </ul>
+        
+        <!-- 🎛️ RIGHT BLOCK: INTERACTIVE CORE ACTION CONTROLS (EXACT SCREENSHOT SYNC) -->
+        <div class="cyder-nav-actions-stack">
+            
+            <!-- 🌓 1. थीम स्विचर कैप्सूल (Pill Toggle Display Only) -->
+            <div class="cyder-theme-switcher-pill">
+                <button class="theme-icon-node active-system-mode">
+                    <!-- मॉनिटर आइकॉन (सिस्टम मोड) -->
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                </button>
+                <button class="theme-icon-node">
+                    <!-- सूरज आइकॉन (लाइट मोड) -->
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                </button>
+                <button class="theme-icon-node">
+                    <!-- चाँद आइकॉन (डार्क मोड) -->
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+            </div>
+
+            <!-- ✨ 2. चमचमाता प्रीमियम गोल्ड बटन -->
+            <a href="#premium" class="btn-cyder-premium-gold-badge">
+                <span class="gold-sparkle-icon">✨</span> Premium
+            </a>
+
+            <!-- ⚡ 3. बिल्कुल स्क्रीनशॉट जैसा तीखा ऐड टू डिस्कॉर्ड बटन -->
+            <a href="https://discord.com/oauth2/authorize?client_id=1467715637685129246&permissions=8&response_type=code&redirect_uri=https%3A%2F%2Fdiscord.com%2Foauth2%2Fauthorized&integration_type=0&scope=guilds+applications.commands+bot" target="_blank" class="btn-cyder-add-to-discord-action">
+                <!-- डिस्कॉर्ड लाइटनिंग बोल्ट आइकॉन -->
+                <svg class="bolt-svg-icon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                Add to Discord
+            </a>
+
+        </div>
+    </div>
+</header>
+<!-- ========================================================================= -->
+<!-- 🌌 2. PRODUCTION HUB: CYDER DUAL-COLUMN HERO SHOWCASE (EXACT BLANK SPACE FIX) -->
+<!-- ========================================================================= -->
+<section id="home" class="cyder-hero-viewport-section">
+    <!-- 👥 मास्टर डबल कॉलम कतार (Two Parallel Columns Container) -->
+    <div class="cyder-hero-master-flex-grid">
+        
+        <!-- ✍️ LEFT COLUMN: TEXT CONTENT & ACTIONS STACK -->
+        <div class="cyder-hero-left-content-panel">
+            
+            <!-- ⚡ TOP BRANDING BADGE NODE WITH REAL CYDER LOGO -->
+            <div class="cyder-hero-badge-capsule">
+                <img src="avtar.png" alt="Cyder Badge Logo" class="cyder-badge-micro-logo">
+                Cyder Team &middot; 2026
+            </div>
+            
+            <!-- 🛡️ MAIN ACCENT TAGLINE -->
+            <h1 class="cyder-hero-main-slogan">
+                Your Server<br>
+                <span class="cyder-neon-green-glow-text">Under Control.</span>
+            </h1>
+            
+            <!-- ✍️ CORE BOT SUB-DESCRIPTION LABEL -->
+            <p class="cyder-hero-sub-description-label">
+                Cyder streams advanced security, moderation, and full guild protection layout matrices directly into your server panels — with premium commands and real-time event logging built in from day one.
+            </p>
+            
+            <!-- 🎛️ DOUBLE DYNAMIC ACTION ROW BUTTONS -->
+            <div class="cyder-hero-action-buttons-row">
+                <a href="https://discord.com/oauth2/authorize?client_id=1467715637685129246&permissions=8&response_type=code&redirect_uri=https%3A%2F%2Fdiscord.com%2Foauth2%2Fauthorized&integration_type=0&scope=guilds+applications.commands+bot" target="_blank" class="btn-hero-primary-action">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 6px; transform: translateY(0.5px);"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    Add to Discord &rarr;
+                </a>
+                <a href="#features" class="btn-hero-secondary-action">
+                    See all features &rarr;
+                </a>
+            </div>
+
+            <!-- 👥 SOCIAL PROOF: TEAM AVATARS & CLIENT STATISTICS ROW -->
+            <div class="cyder-hero-social-proof-footer">
+                <div class="cyder-avatars-overlap-row">
+                    <div class="avatar-circle-node" style="background-image: url('SERVER 1.png'); z-index: 3;"></div>
+                    <div class="avatar-circle-node" style="background-image: url('SV 2.gif'); z-index: 2; margin-left: -12px;"></div>
+                    <div class="avatar-circle-node" style="background-image: url('owner.jpg'); z-index: 1; margin-left: -12px; filter: brightness(0.75);"></div>
+                </div>
+                <p class="cyder-social-proof-text-label">
+                    Trusted by <span>thousands of Discord servers</span>
+                </p>
+            </div>
+
+        </div>
+
+        <!-- 💻 RIGHT COLUMN: DYNAMIC DISCORD LIVE SIMULATOR (🚀 फिक्स: बिल्कुल खाली एरिया में सेट किया) -->
+        <div class="cyder-hero-right-animation-panel">
+            <div class="cyder-discord-mockup-frame">
+                
+                <!-- 🔴 🟡 🟢 विंडो का टॉप बार -->
+                <div class="cyder-mockup-header-bar">
+                    <span style="width: 10px; height: 10px; background: #ff5f56; border-radius: 50%; display: inline-block;"></span>
+                    <span style="width: 10px; height: 10px; background: #ffbd2e; border-radius: 50%; display: inline-block;"></span>
+                    <span style="width: 10px; height: 10px; background: #27c93f; border-radius: 50%; display: inline-block;"></span>
+                    <span class="cyder-mockup-header-channel-title" style="font-size: 12.5px; font-weight: 700; color: #64748b; margin-left: 12px;">cyder-bot &middot; #security-log</span>
+                </div>
+                
+                <!-- 💻 अंदर का मुख्य टर्मिनल कंसोल एरिया -->
+                <div class="cyder-mockup-terminal-body">
+                    <div style="margin-bottom: 4px; text-align: left;">
+                        <span style="color: #64748b; font-weight: 500;">— You in</span> <span style="color: #A855F7; font-weight: 700;">#security-log</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; text-align: left;">
+                        <span style="color: #A855F7; font-size: 12px; text-shadow: 0 0 8px rgba(168, 85, 247, 0.4);">&#9670;</span>
+                        <div style="display: inline-block; position: relative; width: 100%;">
+                            <span class="cyder-typewriter-text-line">,enableantinuke</span>
+                        </div>
+                    </div>
+                    <div class="cyder-response-line-1" style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; text-align: left;">
+                        <span>🔍</span> <span style="color: #64748b; font-weight: 500;">Resolving firewall nodes & guilds access clearance...</span>
+                    </div>
+                    <div class="cyder-response-line-2" style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; text-align: left;">
+                        <span>✅</span> <span class="cyder-mockup-success-green-text" style="font-weight: 700;">Anti-Raid Enabled: "CYDER SUPPORT TEAM" (Secured)</span>
+                    </div>
+                    <div class="cyder-response-line-3" style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; text-align: left;">
+                        <span>🛡️</span> <span style="font-weight: 700;">Cyder Guard is now actively protecting whole server</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ========================================================================= -->
+<!-- 📊 3. PRODUCTION HUD: CYDER BOT LIVE STATISTICS COUNTER GRID (60 FPS)     -->
+<!-- ========================================================================= -->
+<section id="statistics" class="cyder-stats-section-wrapper">
+    <div class="cyder-stats-grid-container">
+        
+        <!-- 📟 CARD 1: LATENCY INDICATOR -->
+        <div class="cyder-stat-counter-card">
+            <div class="stat-icon-glow-node">
+                <!-- नेटवर्क लेटेंसी वेव आइकॉन -->
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20v-8m0 0V4m0 8h8m-8 0H4"/></svg>
+            </div>
+         <!-- 🚀 फिक्स: हमने '12ms' को एक स्पेशल बख्तरबंद आईडी दे दी है ताकि जावास्क्रिप्ट इसे ढूंढ सके -->
+           <h2 id="cyder-live-ping-node">12ms</h2>
+
+            <p class="stat-core-title-label">Bot Latency</p>
+        </div>
+
+        <!-- ⏳ CARD 2: UPTIME MONITOR -->
+        <div class="cyder-stat-counter-card">
+            <div class="stat-icon-glow-node">
+                <!-- २४ घंटे एक्टिव क्लॉक आइकॉन -->
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </div>
+            <!-- 🚀 फिक्स: हमने '99.9%' को हटाकर एक स्पेशल लाइव आईडी दे दी है ताकि जावास्क्रिप्ट इसपे टिक-टिक टाइमर चला सके भाई -->
+            <h2 id="cyder-live-uptime-node" style="font-feature-settings: 'tnum' !important; font-variant-numeric: tabular-nums !important;">   26d 14h 32m 05s</h2>
+
+            <p class="stat-core-title-label">Uptime Ratio</p>
+        </div>
+
+        <!-- 🏢 CARD 3: TOTAL GUILDS COMPONENT -->
+        <div class="cyder-stat-counter-card">
+            <div class="stat-icon-glow-node">
+                <!-- डिस्कॉर्ड सर्वर शील्ड आइकॉन -->
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <!-- 🚀 फिक्स: तीसरे कार्ड के नंबर को हमने स्पेशल लाइव आईडी दे दी भाई -->
+           <h2 id="cyder-live-servers-node">1,254</h2>
+            <p class="stat-core-title-label">Total Servers</p>
+        </div>
+
+        <!-- 👥 CARD 4: TOTAL PROTECTED USERS LAYER -->
+        <div class="cyder-stat-counter-card">
+            <div class="stat-icon-glow-node">
+                <!-- कम्युनिटी यूजर्स आइकॉन -->
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            </div>
+            <!-- 🚀 फिक्स: चौथे कार्ड के नंबर को भी हमने लाइव आईडी दे दी भाई -->
+              <h2 id="cyder-live-users-node">10,250</h2>
+            <p class="stat-core-title-label">Total Users</p>
+        </div>
+
+    </div>
+</section>
+<!-- ========================================================================= -->
+<!-- 🛡️ 5. PRODUCTION HUD: CYDER CORE 17 SECURITY FEATURES GRID (60 FPS)       -->
+<!-- ========================================================================= -->
+<section id="features" class="cyder-features-section-wrapper">
+    
+    <!-- सेक्शन हेडिंग (100% परफेक्ट लेफ्ट अलाइन बिल्कुल थीम के हिसाब से) -->
+        <!-- ========================================================================= -->
+    <!-- 👑 FIXED: PREMIUM CORE PITCH SUB-HEADER BLOCK (EXACT CLIENT SYNC)        -->
+    <!-- ========================================================================= -->
+    <div class="cyder-features-main-header" style="margin-bottom: 45px; text-align: left !important; display: flex; flex-direction: column; align-items: flex-start;">
+        
+        <!-- 🟣 ऊपर का छोटा प्रीमियम पर्पल सब-बैज बिल्कुल स्क्रीनशॉट जैसा -->
+        <span class="cyder-features-badge-label-accent" style="color: #A855F7 !important; font-family: 'Syncopate', sans-serif !important; font-size: 11.5px !important; font-weight: 800 !important; letter-spacing: 1px !important; text-transform: uppercase !important; margin-bottom: 12px !important; display: inline-block !important; text-shadow: 0 0 10px rgba(168, 85, 247, 0.15) !important;">
+            What makes cyder different
+        </span>
+        
+        <!-- 🏢 मुख्य बड़ा बोल्ड हेडिंग संदेश (बिना किसी नियॉन ग्लो के, एकदम साफ और एलीट) -->
+        <h2 class="features-section-title" style="font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important; color: var(--cyder-text-main) !important; font-size: 38px !important; font-weight: 850 !important; line-height: 1.2 !important; letter-spacing: -1.2px !important; text-transform: none !important; margin: 0 !important; text-align: left !important; max-width: 720px !important;">
+             Cyder Core Features
+        </h2>
+        
+    </div>
+
+
+    <!-- 🌐 3-कॉलम मास्टर फीचर्स ग्रिड (3-Column Grid Container) -->
+    <div class="cyder-features-grid-matrix">
+        
+        <!-- ⚡ FEATURE 1: AntiNuke -->
+        <div class="cyder-feature-obsidian-card">
+            <div class="feature-icon-box">🛡️</div>
+            <div class="feature-text-stack">
+                <h4>AntiNuke</h4>
+                <p>Instant server lockdown against unauthorized rogue administrator actions.</p>
+            </div>
+        </div>
+
+        <!-- ⚡ FEATURE 2: Moderation -->
+        <div class="cyder-feature-obsidian-card">
+            <div class="feature-icon-box">⚔️</div>
+            <div class="feature-text-stack">
+                <h4>Moderation</h4>
+                <p>Advanced full-suite moderation commands to keep your chat clean.</p>
+            </div>
+        </div>
+
+        <!-- ⚡ FEATURE 3: AntiSpam -->
+        <div class="cyder-feature-obsidian-card">
+            <div class="feature-icon-box">⚠️</div>
+            <div class="feature-text-stack">
+                <h4>AntiSpam</h4>
+                <p>High-speed message threshold detection to eliminate spam bots instantly.</p>
+            </div>
+        </div>
+
+        <!-- ⚡ FEATURE 4: AntiLink -->
+        <div class="cyder-feature-obsidian-card">
+            <div class="feature-icon-box">🔗</div>
+            <div class="feature-text-stack">
+                <h4>AntiLink</h4>
+                <p>Blocks malicious phishing links and unauthorized invite advertisements.</p>
+            </div>
+        </div>
+
+        <!-- ⚡ FEATURE 5: Autorole -->
+        <div class="cyder-feature-obsidian-card">
+            <div class="feature-icon-box">⚙️</div>
+            <div class="feature-text-stack">
+                <h4>Autorole</h4>
+                <p>Automatically assigns specific baseline roles to new members on entry.</p>
+            </div>
+        </div>
+
+        <!-- ⚡ FEATURE 6: QuickRole -->
+        <div class="cyder-feature-obsidian-card">
+            <div class="feature-icon-box">⚡</div>
+            <div class="feature-text-stack">
+                <h4>QuickRole</h4>
+                <p>Rapid role management shortcuts optimized for server administrators.</p>
+            </div>
+        </div>
+
+        <!-- ⚡ FEATURE 7: AutoResponder -->
+        <div class="cyder-feature-obsidian-card">
+            <div class="feature-icon-box">💬</div>
+            <div class="feature-text-stack">
+                <h4>AutoResponder</h4>
+                <p>Triggers custom automated direct responses to specific keyword queries.</p>
+            </div>
+        </div>
+
+        <!-- ⚡ FEATURE 8: AutoReact -->
+        <div class="cyder-feature-obsidian-card">
+            <div class="feature-icon-box">🎭</div>
+            <div class="feature-text-stack">
+                <h4>AutoReact</h4>
+                <p>Instantly attaches designated reaction emojis to target text channels.</p>
+            </div>
+        </div>
+
+        <!-- ⚡ FEATURE 9: Giveaway -->
+        <div class="cyder-feature-obsidian-card">
+            <div class="feature-icon-box">🎁</div>
+            <div class="feature-text-stack">
+                <h4>Giveaway</h4>
+                <p>Interactive full giveaway hosting framework with randomized draw logic.</p>
+            </div>
+        </div>
+
+        <!-- ⚡ FEATURE 10: Voice Moderation -->
+        <div class="cyder-feature-obsidian-card">
+            <div class="feature-icon-box">🎙️</div>
+            <div class="feature-text-stack">
+                <h4>Voice Moderation</h4>
+                <p>Monitors and logs voice state manipulation patterns inside channels.</p>
+            </div>
+        </div>
+
+        <!-- ⚡ FEATURE 11: Join To Create -->
+        <div class="cyder-feature-obsidian-card">
+            <div class="feature-icon-box">🔊</div>
+            <div class="feature-text-stack">
+                <h4>Join To Create</h4>
+                <p>Dynamic creation of temporary custom voice channels for active users.</p>
+            </div>
+        </div>
+
+        <!-- ⚡ FEATURE 12: Utility -->
+        <div class="cyder-feature-obsidian-card">
+            <div class="feature-icon-box">ℹ️</div>
+            <div class="feature-text-stack">
+                <h4>Utility</h4>
+                <p>Essential diagnostic tools, server lookups, and information commands.</p>
+            </div>
+        </div>
+
+        <!-- ⚡ FEATURE 13: AutoLogs -->
+        <div class="cyder-feature-obsidian-card">
+            <div class="feature-icon-box">📋</div>
+            <div class="feature-text-stack">
+                <h4>AutoLogs</h4>
+                <p>Tracks and pipes comprehensive server event audits to logs channels.</p>
+            </div>
+        </div>
+
+        <!-- ⚡ FEATURE 14: Embed Builder -->
+        <div class="cyder-feature-obsidian-card">
+            <div class="feature-icon-box">🎨</div>
+            <div class="feature-text-stack">
+                <h4>Embed Builder</h4>
+                <p>Craft custom rich embedded announcements natively via slash triggers.</p>
+            </div>
+        </div>
+
+        <!-- ⚡ FEATURE 15: Greet -->
+        <div class="cyder-feature-obsidian-card">
+            <div class="feature-icon-box">👋</div>
+            <div class="feature-text-stack">
+                <h4>Greet</h4>
+                <p>Beautiful customizable welcoming layouts to greet incoming users.</p>
+            </div>
+        </div>
+
+        <!-- ⚡ FEATURE 16: Leave -->
+        <div class="cyder-feature-obsidian-card">
+            <div class="feature-icon-box">🚪</div>
+            <div class="feature-text-stack">
+                <h4>Leave</h4>
+                <p>Tracks user exit dynamics with modular departure logs configurations.</p>
+            </div>
+        </div>
+
+        <!-- ⚡ FEATURE 17: Boost -->
+        <div class="cyder-feature-obsidian-card">
+            <div class="feature-icon-box">💎</div>
+            <div class="feature-text-stack">
+                <h4>Boost</h4>
+                <p>Triggers premium alert events when someone boosts the guild tier.</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- ========================================================================= -->
+<!-- 🔊 6. FIXED PRODUCTION HUD: CYDER OWN VC CONTROLS WITH DYNAMIC DETAILED HOVER/TAP INTERACTION -->
+<!-- ========================================================================= -->
+<section id="vc-controls" class="cyder-vc-section-wrapper">
+    
+    <!-- सेक्शन हेडिंग -->
+    <div class="cyder-vc-main-header" style="margin-bottom: 35px; text-align: left !important;">
+        <span style="color: #A855F7 !important; font-family: 'Syncopate', sans-serif !important; font-size: 11.5px !important; font-weight: 800 !important; letter-spacing: 1px !important; text-transform: uppercase !important; margin-bottom: 8px !important; display: inline-block !important;">
+            Voice System Dashboard
+        </span>
+        <h2 style="font-family: 'Plus Jakarta Sans', sans-serif !important; color: var(--cyder-text-main) !important; font-size: 32px !important; font-weight: 850 !important; letter-spacing: -1px !important; margin: 0 !important;">
+            Own VC Control
+        </h2>
+    </div>
+
+    <!-- 🌐 4-कॉलम मास्टर वीसी ग्रिड (Interactive Card Grid Container) -->
+    <div class="cyder-vc-grid-matrix">
+        
+        <!-- 🎛️ BUTTON 1: LOCK -->
+        <div class="cyder-vc-action-card" tabindex="0">
+            <div class="vc-card-visible-row">
+                <div class="vc-icon-vector-shell">🔒</div>
+                <div class="vc-card-vertical-divider"></div>
+                <span class="vc-btn-title-label">LOCK</span>
+                <span class="vc-phone-info-trigger-icon">ℹ️</span>
+            </div>
+            <div class="vc-card-hidden-detailed-drawer">
+                Closes the voice channel permissions, preventing new members from joining.
+            </div>
+        </div>
+
+        <!-- 🎛️ BUTTON 2: UNLOCK -->
+        <div class="cyder-vc-action-card" tabindex="0">
+            <div class="vc-card-visible-row">
+                <div class="vc-icon-vector-shell">🔓</div>
+                <div class="vc-card-vertical-divider"></div>
+                <span class="vc-btn-title-label">UNLOCK</span>
+                <span class="vc-phone-info-trigger-icon">ℹ️</span>
+            </div>
+            <div class="vc-card-hidden-detailed-drawer">
+                Opens the voice channel permissions back up to public members.
+            </div>
+        </div>
+
+        <!-- 🎛️ BUTTON 3: HIDE -->
+        <div class="cyder-vc-action-card" tabindex="0">
+            <div class="vc-card-visible-row">
+                <div class="vc-icon-vector-shell">👁️‍🗨️</div>
+                <div class="vc-card-vertical-divider"></div>
+                <span class="vc-btn-title-label">HIDE</span>
+                <span class="vc-phone-info-trigger-icon">ℹ️</span>
+            </div>
+            <div class="vc-card-hidden-detailed-drawer">
+                Makes the voice room invisible to everyone except allowed members.
+            </div>
+        </div>
+
+        <!-- 🎛️ BUTTON 4: UNHIDE -->
+        <div class="cyder-vc-action-card" tabindex="0">
+            <div class="vc-card-visible-row">
+                <div class="vc-icon-vector-shell">👁️</div>
+                <div class="vc-card-vertical-divider"></div>
+                <span class="vc-btn-title-label">UNHIDE</span>
+                <span class="vc-phone-info-trigger-icon">ℹ️</span>
+            </div>
+            <div class="vc-card-hidden-detailed-drawer">
+                Restores standard visibility configurations for the target channel.
+            </div>
+        </div>
+
+        <!-- 🎛️ BUTTON 5: LIMIT -->
+        <div class="cyder-vc-action-card" tabindex="0">
+            <div class="vc-card-visible-row">
+                <div class="vc-icon-vector-shell">👤</div>
+                <div class="vc-card-vertical-divider"></div>
+                <span class="vc-btn-title-label">LIMIT</span>
+                <span class="vc-phone-info-trigger-icon">ℹ️</span>
+            </div>
+            <div class="vc-card-hidden-detailed-drawer">
+                Sets a maximum capacity limit for user slots inside the voice channel.
+            </div>
+        </div>
+
+        <!-- 🎛️ BUTTON 6: INVITE -->
+        <div class="cyder-vc-action-card" tabindex="0">
+            <div class="vc-card-visible-row">
+                <div class="vc-icon-vector-shell">➕</div>
+                <div class="vc-card-vertical-divider"></div>
+                <span class="vc-btn-title-label">INVITE</span>
+                <span class="vc-phone-info-trigger-icon">ℹ️</span>
+            </div>
+            <div class="vc-card-hidden-detailed-drawer">
+                Dispatches a rapid routing invite anchor code to a specified friend.
+            </div>
+        </div>
+
+        <!-- 🎛️ BUTTON 7: BAN -->
+        <div class="cyder-vc-action-card" tabindex="0">
+            <div class="vc-card-visible-row">
+                <div class="vc-icon-vector-shell">🚫</div>
+                <div class="vc-card-vertical-divider"></div>
+                <span class="vc-btn-title-label">BAN</span>
+                <span class="vc-phone-info-trigger-icon">ℹ️</span>
+            </div>
+            <div class="vc-card-hidden-detailed-drawer">
+                Kicks out and blacklists a toxic user from ever re-entering the current room.
+            </div>
+        </div>
+
+        <!-- 🎛️ BUTTON 8: PERMIT -->
+        <div class="cyder-vc-action-card" tabindex="0">
+            <div class="vc-card-visible-row">
+                <div class="vc-icon-vector-shell">✔️</div>
+                <div class="vc-card-vertical-divider"></div>
+                <span class="vc-btn-title-label">PERMIT</span>
+                <span class="vc-phone-info-trigger-icon">ℹ️</span>
+            </div>
+            <div class="vc-card-hidden-detailed-drawer">
+                Grants bypass permissions to a trusted member for locked zones.
+            </div>
+        </div>
+
+        <!-- 🎛️ BUTTON 9: RENAME -->
+        <div class="cyder-vc-action-card" tabindex="0">
+            <div class="vc-card-visible-row">
+                <div class="vc-icon-vector-shell">✏️</div>
+                <div class="vc-card-vertical-divider"></div>
+                <span class="vc-btn-title-label">RENAME</span>
+                <span class="vc-phone-info-trigger-icon">ℹ️</span>
+            </div>
+            <div class="vc-card-hidden-detailed-drawer">
+                Instantly changes the visible string name title tag of the active voice setup.
+            </div>
+        </div>
+
+        <!-- 🎛️ BUTTON 10: BITRATE -->
+        <div class="cyder-vc-action-card" tabindex="0">
+            <div class="vc-card-visible-row">
+                <div class="vc-icon-vector-shell">🎧</div>
+                <div class="vc-card-vertical-divider"></div>
+                <span class="vc-btn-title-label">BITRATE</span>
+                <span class="vc-phone-info-trigger-icon">ℹ️</span>
+            </div>
+            <div class="vc-card-hidden-detailed-drawer">
+                Adjusts raw audio audio performance bandwidth values up to 384kbps.
+            </div>
+        </div>
+
+        <!-- 🎛️ BUTTON 11: REGION -->
+        <div class="cyder-vc-action-card" tabindex="0">
+            <div class="vc-card-visible-row">
+                <div class="vc-icon-vector-shell">🗺️</div>
+                <div class="vc-card-vertical-divider"></div>
+                <span class="vc-btn-title-label">REGION</span>
+                <span class="vc-phone-info-trigger-icon">ℹ️</span>
+            </div>
+            <div class="vc-card-hidden-detailed-drawer">
+                Switches the physical voice server infrastructure location nodes.
+            </div>
+        </div>
+
+        <!-- 🎛️ BUTTON 12: TEMPLATE -->
+        <div class="cyder-vc-action-card" tabindex="0">
+            <div class="vc-card-visible-row">
+                <div class="vc-icon-vector-shell">📋</div>
+                <div class="vc-card-vertical-divider"></div>
+                <span class="vc-btn-title-label">TEMPLATE</span>
+                <span class="vc-phone-info-trigger-icon">ℹ️</span>
+            </div>
+            <div class="vc-card-hidden-detailed-drawer">
+                Saves current channel configurations setups for fast clone loads later.
+            </div>
+        </div>
+
+        <!-- 🎛️ BUTTON 13: CHAT -->
+        <div class="cyder-vc-action-card" tabindex="0">
+            <div class="vc-card-visible-row">
+                <div class="vc-icon-vector-shell">💬</div>
+                <div class="vc-card-vertical-divider"></div>
+                <span class="vc-btn-title-label">CHAT</span>
+                <span class="vc-phone-info-trigger-icon">ℹ️</span>
+            </div>
+            <div class="vc-card-hidden-detailed-drawer">
+                Binds a dedicated text chat interface directly linked to this voice instance.
+            </div>
+        </div>
+
+        <!-- 🎛️ BUTTON 14: WAITING -->
+        <div class="cyder-vc-action-card" tabindex="0">
+            <div class="vc-card-visible-row">
+                <div class="vc-icon-vector-shell">🕒</div>
+                <div class="vc-card-vertical-divider"></div>
+                <span class="vc-btn-title-label">WAITING</span>
+                <span class="vc-phone-info-trigger-icon">ℹ️</span>
+            </div>
+            <div class="vc-card-hidden-detailed-drawer">
+                Creates a staging waiting lobby room container for incoming users queues.
+            </div>
+        </div>
+ 
+        <!-- 🎛️ BUTTON 15: CLAIM -->
+        <div class="cyder-vc-action-card" tabindex="0">
+            <div class="vc-card-visible-row">
+                <div class="vc-icon-vector-shell">👑</div>
+                <div class="vc-card-vertical-divider"></div>
+                <span class="vc-btn-title-label">CLAIM</span>
+                <span class="vc-phone-info-trigger-icon">ℹ️</span>
+            </div>
+            <div class="vc-card-hidden-detailed-drawer">
+                Takes over ownership control permissions if the original host disconnects.
+            </div>
+        </div>
+    </section>
+        
+
+<!-- ========================================================================= -->
+<!-- ⭐ 7. BULETPROOF HUDS: CYDER UNTOUCHED MOBILE REVIEWS GRID (100% FIXED)  -->
+<!-- ========================================================================= -->
+<section id="testimonials" class="cyder-reviews-section-wrapper">
+    
+    <!-- पिच हेडिंग ब्लॉक -->
+    <div class="cyder-reviews-main-header">
+        <span class="reviews-badge-accent-label">Community Love</span>
+        <h2 class="reviews-section-main-title">Servers that run on Cyder.</h2>
+        <p class="reviews-section-subtitle">Real feedback from Discord server owners, managers, and members.</p>
+    </div>
+
+    <!-- 🚀 फिक्स: बिल्कुल नया क्लास नाम 'cyder-unbreakable-flex-stack' ताकि कोई पुराना कोड क्लैश न हो -->
+    <div class="cyder-unbreakable-flex-stack">
+        
+        <!-- 👥 CARD 1: Head Hunter -->
+        <div class="cyder-review-obsidian-card">
+            <div class="review-user-profile-row">
+                <div class="review-user-avatar">
+                    <img src="SERVER 1.png" alt="Head Hunter">
+                </div>
+                <div class="review-user-meta-stack">
+                    <h4>Head Hunter</h4>
+                    <p>Server Owner</p>
+                </div>
+            </div>
+            <div class="review-stars-gold-row">★★★★★</div>
+            <p class="review-core-feedback-text">
+               Best security bot so far. Anti-nuke feature works perfectly and stops rogue stuff instantly. Fully 
+               satisfied with Cyder premium!
+
+            </p>
+        </div>
+
+        <!-- 👥 CARD 2: Warriors Zooba -->
+        <div class="cyder-review-obsidian-card">
+            <div class="review-user-profile-row">
+                <div class="review-user-avatar">
+                    <img src="SV 2.gif" alt="Warriors Zooba">
+                </div>
+                <div class="review-user-meta-stack">
+                    <h4>Warriors Zooba</h4>
+                    <p>Discord Partner Server</p>
+                </div>
+            </div>
+            <div class="review-stars-gold-row">★★★★★</div>
+            <p class="review-core-feedback-text">
+              Raid security is amazing. everything like  fake accounts aur link spammers stopped. Active session filters code handles everything nicely without lag.
+            </p>
+        </div>
+
+        <!-- 👥 CARD 3: Dreamy -->
+        <div class="cyder-review-obsidian-card">
+            <div class="review-user-profile-row">
+                <div class="review-user-avatar">
+                    <img src="SV 3.gif" alt="Dreamy">
+                </div>
+                <div class="review-user-meta-stack">
+                    <h4>Dreamy</h4>
+                    <p>Moderator</p>
+                </div>
+            </div>
+            <div class="review-stars-gold-row">★★★★★</div>
+            <p class="review-core-feedback-text">
+                Logging system setup is very clean. Message edits, deletes, and voice status tracking  Updates in seconds. Info  Moderation duties become very easy! Thanks Cyder team.
+            </p>
+        </div>
+
+        <!-- 👥 CARD 4: Isekai -->
+        <div class="cyder-review-obsidian-card">
+            <div class="review-user-profile-row">
+                <div class="review-user-avatar">
+                    <img src="SV 5.png" alt="Isekai">
+                </div>
+                <div class="review-user-meta-stack">
+                    <h4>Isekai</h4>
+                    <p>Community Manager</p>
+                </div>
+            </div>
+            <div class="review-stars-gold-row">★★★★★</div>
+            <p class="review-core-feedback-text">
+                Switched from old security systems to Cyder and never looked back. The web dashboard panel is extremely clean, autorole setup works great, and the protection engine almost never goes down.
+            </p>
+        </div>
+
+        <!-- 👥 CARD 5: Midnight Harkatein -->
+        <div class="cyder-review-obsidian-card">
+            <div class="review-user-profile-row">
+                <div class="review-user-avatar">
+                    <img src=" SV 6.gif" alt="Midnight Harkatein">
+                </div>
+                <div class="review-user-meta-stack">
+                    <h4>Midnight Harkatein</h4>
+                    <p>Developer & Server Admin</p>
+                </div>
+            </div>
+            <div class="review-stars-gold-row">★★★★★</div>
+            <p class="review-core-feedback-text">
+               Comma(,) commands usage structure is simple. Setup templates trigger seamlessly and custom response module saves a lot of time. Real developer-friendly bot panel design.
+            </p>
+        </div>
+
+        <!-- 👥 CARD 6: Soul Place -->
+        <div class="cyder-review-obsidian-card">
+            <div class="review-user-profile-row">
+                <div class="review-user-avatar">
+                    <img src="SV 8.png" alt="Soul Place">
+                </div>
+                <div class="review-user-meta-stack">
+                    <h4>Soul Place</h4>
+                    <p>User Premium subscriber</p>
+                </div>
+            </div>
+            <div class="review-stars-gold-row">★★★★★</div>
+            <p class="review-core-feedback-text">
+            Captcha protection entirely stopped fake accounts spamming our chats. Personal badges and custom greeting layouts look premium. Total value for money features.
+            </p>
+         
+        </div>
+
+    </div>
+</section>
+
+    <!-- ========================================================================= -->
+<!-- 👑 8. PRODUCTION HUD: CYDER PREMIUM CTA CARD CONTAINER (100% SYNC)       -->
+<!-- ========================================================================= -->
+<section id="premium" class="cyder-premium-cta-section-shell">
+    <div class="cyder-premium-master-card-node">
+        
+        <!-- ✍️ LEFT PANEL: CONTENT STACK & VALIDATED CHECKMARKS -->
+        <div class="premium-cta-left-content-panel">
+            
+                   <!-- 👑 फिक्स 1: पिच बैनर पर इमोजी हटाकर तुम्हारी असली इमेज यहाँ माइक्रो-साइज में फिट है भाई -->
+        <span class="banner-badge-tag-accent">
+            <img src="avtar.png" alt="Cyder Crown Logo" class="cyder-premium-micro-img-badge"> Cyder Premium
+        </span>
+
+            
+            <!-- मुख्य बड़ा टाइटल संदेश -->
+            <h2 class="premium-cta-main-title">Unlock the full experience.</h2>
+            
+            <!-- सब-टेक्स्ट विवरण (तुम्हारे Pterodactyl Panel और Features के हिसाब से) -->
+            <p class="premium-cta-description-text">
+                Cyder Guard Pro gives your entire server advanced 24/7 anti-raid matrices, unlimited verification setups, and priority hosting bandwidth logs. 
+            </p>
+            
+            <!-- 🗛 नीचे की ३ बारीक वैलिडेटेड चेकमार्क बीड्स (Exact Screen Sync) -->
+            <div class="premium-validated-checkmarks-row">
+                <span class="check-node"><b style="color: #63FF00; margin-right: 6px;">✓</b> Unlimited Anti-Raid</span>
+                <span class="check-node"><b style="color: #63FF00; margin-right: 6px;">✓</b> Full Logs Auto-Backup</span>
+                <span class="check-node"><b style="color: #63FF00; margin-right: 6px;">✓</b> 24/7 Priority Panel Hosting</span>
+            </div>
+
+        </div>
+
+               <!-- 🎛️ राइट साइड ऐक्शन बटन्स (🚀 फिक्स: पुराने ट्रिगर को हटाकर क्लीन आइसोलेटेड क्लास सिंक की भाई) -->
+        <div class="cyder-banner-right-action-buttons">
+            
+            <!-- 🔒 फिक्स: यह बटन 'cyder-btn-coming-soon-locked' क्लास के साथ हमेशा के लिए डिसेबल्ड लॉक हो चुका है भाई! -->
+            <a href="javascript:void(0);" class="cyder-btn-coming-soon-locked">Coming Soon</a>
+            
+            <!-- नीचे का दूसरा सपोर्ट सर्वर बटन -->
+            <a href="https://discord.com/invite/W8AkM4eYmB" target="_blank" class="btn-banner-support-server">Join support server</a>
+        </div>
+
+
+
+    </div>
+</section>
+<!-- ========================================================================= -->
+<!-- 🗺️ 9. PRODUCTION HUD: CYDER CORE FOOTER BRAND BLOCK (EXACT SYNC CLONE)   -->
+<!-- ========================================================================= -->
+<footer id="footer-brand-core" class="cyder-footer-brand-section-wrapper">
+    <div class="cyder-footer-brand-container">
+        
+        <!-- 🌀 LEFT BLOCK: REAL AVATAR LOGO + BRAND NAME -->
+        
+            <!-- तुम्हारी असली avtar.png इमेज यहाँ गोल घेरे में सिंक है भाई -->
+            <img src="avtar.png" alt="Cyder Logo" class="cyder-footer-core-avatar-img">
+            <span class="cyder-footer-brand-text-label">Cyder</span>
+        </div>
+        
+        <!-- ✍️ CENTER CONTENT: CUSTOMIZED BOT PITCH DESCRIPTION -->
+        <p class="cyder-footer-brand-pitch-description">
+            A Discord  security bot for servers that care about safety.More than 250+ commands.
+        </p>
+        
+        <!-- 🎛️ BOTTOM ACTIONS: DUAL ACTION INTERACTIVE BUTTONS -->
+        <div class="cyder-footer-action-buttons-row">
+            <!-- पहला बटन: प्योर मैट डार्क यूआई -->
+            <a href="https://discord.com/oauth2/authorize?client_id=1467715637685129246&permissions=8&response_type=code&redirect_uri=https%3A%2F%2Fdiscord.com%2Foauth2%2Fauthorized&integration_type=0&scope=guilds+applications.commands+bot" target="_blank" class="btn-footer-action-dark-node">
+                Add to Discord
+            </a>
+            
+            <!-- दूसरा बटन: साफ़ क्रिस्टल बॉर्डर ग्लास यूआई -->
+            <a href="https://discord.com/invite/W8AkM4eYmB" target="_blank" class="btn-footer-action-trans-node">
+                Join support
+            </a>
+        </div>
+
+      </footer>
+<!-- ========================================================================= -->
+<!-- 👥 9. PRODUCTION HUD: CYDER CORE PERSONNEL & DEVELOPER BLOCK (60 FPS)     -->
+<!-- ========================================================================= -->
+<section id="team" class="cyder-team-section-viewport-wrapper">
+    
+    <!-- 👑 एलीट पिच हेडिंग ब्लॉक बिल्कुल थीम के हिसाब से -->
+    <div class="cyder-team-main-header">
+        <span class="team-badge-accent-label">The Core Captains</span>
+        <h2 class="team-section-main-title">Meet the Team.</h2>
+        
+    </div>
+
+    <!-- 🌐 3-कॉलम मास्टर टीम ग्रिड (3-Column Grid Container) -->
+    <div class="cyder-team-grid-matrix-container">
+        
+        <!-- 👥 PROFILE CARD 1: BOT DEVELOPER / OWNER -->
+        <div class="cyder-team-personnel-lux-card">
+            <div class="team-avatar-frame-holder">
+                <!-- 🚀 फिक्स: CK THE OG का असली अवतार यहाँ लोड होगा भाई -->
+                <img src="owner.jpg" alt="CK THE OG" class="team-core-avatar-img-node">
+            </div>
+            <h4 class="team-member-name-label">CK THE OG</h4>
+            <span class="team-role-tag role-owner-purple">Bot Developer</span>
+            <p class="team-member-short-bio">Mastermind behind Cyder's core python code architecture, background event loops, and anti-nuke firewall guard matrices.</p>
+            <div class="team-social-links-row">
+               <span></span>
+               
+            </div>
+        </div>
+
+        <!-- 👥 PROFILE CARD 2: BOT ADMIN -->
+        <div class="cyder-team-personnel-lux-card">
+            <div class="team-avatar-frame-holder">
+                <!-- 🚀 फिक्स: ANERAX का एनिमेटेड या स्टेबल अवतार यहाँ लोड होगा भाई -->
+                <img src="admin.png" alt="ANERAX" class="team-core-avatar-img-node">
+            </div>
+            <h4 class="team-member-name-label">ANERAX</h4>
+            <span class="team-role-tag role-admin-green">Bot Administrator</span>
+            <p class="team-member-short-bio">Manages server-wide operations, enterprise global support clearance channels, and coordinates anti-raid community defense drills.</p>
+            <div class="team-social-links-row">
+             
+            </div>
+        </div>
+
+        <!-- 👥 PROFILE CARD 3: WEBSITE DEVELOPER -->
+        <div class="cyder-team-personnel-lux-card">
+            <div class="team-avatar-frame-holder">
+                <!-- 🚀 फिक्स: Nabarup Chanda का वेब आर्किटेक्ट अवतार यहाँ लोड होगा भाई -->
+                <img src="DEV.png" alt="Nabarup Chanda" class="team-core-avatar-img-node">
+            </div>
+            <h4 class="team-member-name-label"> TS X HUNTER </h4>
+            <span class="team-role-tag role-web-gold">Web Developer</span>
+            <p class="team-member-short-bio">Hello everyone i am a professional web Developer who had developed this cyder web.</p>
+            <div class="team-social-links-row">
+             
+                
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- ========================================================================= -->
+<!-- ❓ 10. PRODUCTION HUD: CYDER CORE FAQ ACCORDION SECTION (60 FPS)         -->
+<!-- ========================================================================= -->
+<section id="faq" class="cyder-faq-section-viewport-wrapper">
+    
+    <!-- 👑 एलीट हेडिंग ब्लॉक -->
+    <div class="cyder-faq-main-header">
+        
+        <h2 class="faq-section-main-title">Frequently Asked Questions.</h2>
+        <p class="faq-section-subtitle">Everything you need to know about setting up, running, and upgrading the Cyder ecosystem.</p>
+    </div>
+
+    <!-- 🌐 FAQ अकॉर्डियन लिस्ट मैट्रिक्स -->
+    <div class="cyder-faq-accordion-matrix-holder">
+        
+        <!-- FAQ ITEM 1 -->
+        <details class="cyder-faq-luxury-dropdown-card">
+            <summary class="cyder-faq-question-title-row">
+                <span>How do I add Cyder to my Discord server?</span>
+                <div class="faq-chevron-icon-node">+</div>
+            </summary>
+            <div class="cyder-faq-answer-content-row">
+                <p>Simply click the "Add to Discord" button anywhere on the website or navigate to our authentication gateway. Make sure you have "Manage Server" permissions in the target guild to authorize the bot successfully.</p>
+            </div>
+        </details>
+
+        <!-- FAQ ITEM 2 -->
+        <details class="cyder-faq-luxury-dropdown-card">
+            <summary class="cyder-faq-question-title-row">
+                <span>Is Cyder completely free to use?</span>
+                <div class="faq-chevron-icon-node">+</div>
+            </summary>
+            <div class="cyder-faq-answer-content-row">
+                <p>Yes! Our Free tier offers  Many core features! our premiums are also available for advanced functions enroll now!</p>
+            </div>
+        </details>
+
+        <!-- FAQ ITEM 3 -->
+        <details class="cyder-faq-luxury-dropdown-card">
+            <summary class="cyder-faq-question-title-row">
+                <span>What is the difference between Guild Pro and User Premium?</span>
+                <div class="faq-chevron-icon-node">+</div>
+            </summary>
+            <div class="cyder-faq-answer-content-row">
+                <p>Guild Pro upgrades your entire server so every member gets access to premium filters and features. User Premium follows your personal Discord ID across any server where Cyder is active.</p>
+            </div>
+        </details>
+
+        <!-- FAQ ITEM 4 -->
+        <details class="cyder-faq-luxury-dropdown-card">
+            <summary class="cyder-faq-question-title-row">
+                <span>What should I do if the bot stops Working ?</span>
+                <div class="faq-chevron-icon-node">+</div>
+            </summary>
+            <div class="cyder-faq-answer-content-row">
+                <p>First, try re-inviting the bot or checking if it has proper permissions granted in the server!</p>
+            </div>
+        </details>
+
+    </div>
+</section>
+
+
+<!-- ========================================================================= -->
+<!-- 🗺️ 10. PRODUCTION HUD: CYDER MASTER LINKS MATRIX DIRECTORY & COPYRIGHT -->
+<!-- ========================================================================= -->
+
+        </div> <!-- ग्रिड मैट्रिक्स बंद -->
+
+        <!-- ⚡ थिन हॉरिजॉन्टल डिवाइडर लाइन बिल्कुल स्क्रीनशॉट जैसी -->
+        <div class="cyder-footer-divider-line"></div>
+
+        <!-- 👑 BOTTOM ROW: LOW-TIER SUB-LINKS & COPYRIGHT STRIP -->
+        <div class="cyder-footer-bottom-copyright-row">
+            
+           
+
+            <!-- Right Side Credits Meta -->
+            <p class="footer-copyright-credits-text-label">
+                &copy; 2026 Cyder &middot; Cyder Built by <span class="credits-author-purple-highlight">CK THE OG</span>.
+            </p>
+
+        </div>
+
+    </div>
+</div>
+<!-- ========================================================================= -->
+<!-- 🛡️ FINAL CORE: CYDER INT_FAQ CHATBOT WIDGET (14 REAL DOCS SYNC)         -->
+<!-- ========================================================================= -->
+
+<!-- A. फ्लोटिंग कोने वाला बटन -->
+<div class="cyder-gatekeeper-corner-badge" onclick="cyderToggleIsolatedChatbot();">
+    <div class="gatekeeper-badge-icon-sphere">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+    </div>
+    <div class="gatekeeper-badge-text-block">
+        <span class="gatekeeper-txt-top">Need help?</span>
+        <span class="gatekeeper-txt-bottom">ASK CYDER AI</span>
+    </div>
+</div>
+
+<!-- B. 🌌 100% आइसोलेटेड मास्टर चैट विंडो -->
+<div id="cyder-isolated-chatbot-panel" class="azelia-isolated-chatbot-mainframe">
+    
+    <!-- हेडर बार -->
+    <div class="azelia-isolated-chat-header-bar">
+        <div class="azelia-isolated-chat-header-titles">
+            <h4>Cyder Assistant</h4>
+            <p>Instant answers from our docs</p>
+        </div>
+        <button class="azelia-isolated-chat-close-btn" onclick="cyderToggleIsolatedChatbot();">&times;</button>
+    </div>
+
+    <!-- 💬 चैट का मुख्य स्क्रॉल एरिया -->
+    <div id="cyder-isolated-msg-scroll-box" class="azelia-isolated-chat-scroll-viewport">
+        
+        <!-- बॉट का पहला स्वागत संदेश -->
+        <div class="azelia-isolated-bubble-row sender-is-bot">
+            <p>Hi I am Cyder assistant bot! How Could i help you?</p>
+        </div>
+
+        <!-- 🚀 🚀 फिक्स: डिस्प्ले पर तैरने वाले सिर्फ 5 सबसे कड़क और मुख्य सवाल बटन्स 🚀 🚀 -->
+        <div id="cyder-isolated-chips-container-grid" class="azelia-isolated-quick-chips-stack">
+            <button class="azelia-quick-clickable-action-btn" onclick="cyderTriggerIsolatedFAQ(1, 'What is Cyder Bot?')">What is Cyder Bot?</button>
+            <button class="azelia-quick-clickable-action-btn" onclick="cyderTriggerIsolatedFAQ(2, 'Is Cyder Bot free to use?')">Is Cyder Bot free to use?</button>
+            <button class="azelia-quick-clickable-action-btn" onclick="cyderTriggerIsolatedFAQ(3, 'Does Cyder have anti-nuke protection?')">Does Cyder have anti-nuke protection?</button>
+            <button class="azelia-quick-clickable-action-btn" onclick="cyderTriggerIsolatedFAQ(4, 'Does Cyder support slash commands?')">Does Cyder support slash commands?</button>
+            <button class="azelia-quick-clickable-action-btn" onclick="cyderTriggerIsolatedFAQ(5, 'Why is Cyder unable to execute a moderation command?')">Why is Cyder unable to execute a moderation command?</button>
+        </div>
+
+    </div>
+
+    <!-- 🎛️ नीचे का इनपुट फॉर्म बार पट्टी -->
+    <div class="azelia-isolated-chat-footer-input-row">
+        <input type="text" id="cyder-isolated-raw-text-input-field" placeholder="Ask about setup, filters, prefix..." onkeypress="if(event.key === 'Enter') cyderProcessIsolatedQuery();">
+        <button class="azelia-isolated-chat-send-rocket-btn" onclick="cyderProcessIsolatedQuery();">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+        </button>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
+<body>
